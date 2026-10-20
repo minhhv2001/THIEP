@@ -5,7 +5,7 @@ THIỆP CƯỚI ONLINE – PHIÊN BẢN PHONG BÌ CÁ NHÂN HÓA
    Giữ nguyên thư mục assets nằm cạnh index.html (đừng chỉ chép mỗi file HTML).
 2. Nhấp vào phong bì màu kem / nút “Mở phong thư mời” để xem thiệp.
 3. Bấm “Chỉnh sửa thông tin” và điền tên cô dâu, chú rể,
-   thời gian, địa điểm và thông tin cha mẹ hai bên.
+   thời gian, địa điểm, thông tin cha mẹ hai bên và thông tin mừng cưới.
 4. Ở đầu khung chỉnh sửa, điền “Tên / cách xưng hô” của người được mời.
    Ví dụ: “Anh Hùng và gia đình”, “Chị Lan”, “Gia đình anh Minh”.
 5. Để tạo link dùng được với người khác, trước tiên tải toàn bộ thư mục website
@@ -14,6 +14,12 @@ THIỆP CƯỚI ONLINE – PHIÊN BẢN PHONG BÌ CÁ NHÂN HÓA
    “Khách mời nhận thiệp”, bấm “Lưu & sao chép link riêng cho khách”.
    Thay tên khác và tạo link mới cho từng khách.
 7. Nếu không điền khách mời, thiệp hiện “Quý khách”.
+
+MỪNG CƯỚI & NHẠC:
+- Trong “Chỉnh sửa thông tin”, thay mã ngân hàng, số tài khoản và tên chủ tài khoản
+  mẫu bằng thông tin thật. QR được tạo theo chuẩn VietQR; có thể để trống số tiền gợi ý.
+- Nhạc nền chuông nhẹ tự bật sau khi khách nhấn mở phong thư (do trình duyệt yêu cầu
+  thao tác của người dùng trước khi phát âm thanh). Có nút bật/tắt nhạc trên thanh đầu trang.
 
 KỸ THUẬT CÁ NHÂN HÓA:
 - Link dùng tham số ?to=... để hiển thị đúng tên khách mời.

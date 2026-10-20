@@ -56,7 +56,8 @@
       display:grid;place-items:center;
       background:
         linear-gradient(180deg, rgba(42,28,20,.48), rgba(42,28,20,.62)),
-        url('assets/couple-main.png') center/cover no-repeat;
+        url('assets/couple-main.png') center -28px/cover no-repeat,
+        #b7a18c;
       transition:opacity .95s ease, visibility .95s ease;
     }
     .opening.done{opacity:0;visibility:hidden;pointer-events:none}
@@ -270,6 +271,30 @@
     .cta-row .ghost{background:#fff;color:var(--text);border:1px solid #efdfcd;box-shadow:none}
     .blessing{font-family:"Great Vibes", cursive;font-size:54px;line-height:1;color:var(--gold);margin-top:18px}
 
+    .gift-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:center}
+    .gift-copy{padding:12px 8px}
+    .gift-copy h4{font-family:"Cormorant Garamond",serif;font-size:42px;line-height:1.05;margin:10px 0;font-weight:600}
+    .gift-copy p{max-width:520px;color:var(--muted);line-height:1.85}
+    .payment-card{
+      position:relative;overflow:hidden;display:grid;grid-template-columns:160px 1fr;gap:22px;align-items:center;
+      padding:22px;background:linear-gradient(135deg,#fffdf9,#f5e8d6);border:1px solid #e4cda9;border-radius:30px;
+      box-shadow:0 22px 54px rgba(112,81,48,.15);animation:giftFloat 5s ease-in-out infinite;
+    }
+    .payment-card::before{content:"";position:absolute;width:210px;height:210px;border-radius:50%;right:-95px;top:-110px;background:radial-gradient(circle,rgba(211,177,129,.35),transparent 68%)}
+    .qr-frame{position:relative;z-index:1;border-radius:22px;background:#fff;padding:10px;border:1px solid #ead8bf;box-shadow:0 12px 28px rgba(96,69,42,.12)}
+    .qr-frame img{width:100%;aspect-ratio:1;object-fit:contain;border-radius:13px;background:#fffaf2}
+    .payment-copy{position:relative;z-index:1;min-width:0}
+    .payment-kicker{font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--gold);margin-bottom:8px}
+    .payment-copy strong{display:block;font-family:"Cormorant Garamond",serif;font-size:29px;line-height:1.15;margin-bottom:11px;overflow-wrap:anywhere}
+    .payment-copy p{margin:5px 0;color:#76685c;font-size:13px;line-height:1.65}
+    .payment-copy p span{display:inline-block;min-width:84px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+    .payment-note{margin-top:14px;padding-top:12px;border-top:1px solid #ead7bd;font-size:12px!important;font-style:italic}
+    .music-button{border:none;border-radius:999px;padding:12px 16px;background:#fff;color:var(--text);cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 8px 22px rgba(124,93,64,.11);border:1px solid #efdfcc;white-space:nowrap}
+    .music-button.playing{background:#f5e4cb;color:#765537;border-color:#dfbf94}
+    .music-button.playing::before{content:"♫ ";animation:musicBeat .8s ease-in-out infinite alternate}
+    @keyframes giftFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    @keyframes musicBeat{from{opacity:.45}to{opacity:1}}
+
     .footer-note{text-align:center;padding:28px 0 60px;color:var(--muted);font-size:12px;letter-spacing:1px}
 
     .overlay{position:fixed;inset:0;background:rgba(37,26,18,.42);backdrop-filter:blur(3px);z-index:41;opacity:0;pointer-events:none;transition:opacity .35s ease}
@@ -377,11 +402,11 @@
       .envelope-stage,.envelope-letter,.envelope-flap,.envelope-seal{transition-duration:.01ms!important}
     }
 
-    .reveal{opacity:0;transform:translateY(24px);transition:opacity .85s ease, transform .85s ease}
+    .reveal{opacity:0;transform:translateX(-56px);transition:opacity .78s cubic-bezier(.22,.8,.25,1), transform .78s cubic-bezier(.22,.8,.25,1);will-change:opacity,transform}
     .reveal.show{opacity:1;transform:none}
 
     @media (max-width: 980px){
-      .hero-card,.invite-layout,.bottom-grid{grid-template-columns:1fr}
+      .hero-card,.invite-layout,.bottom-grid,.gift-layout{grid-template-columns:1fr}
       .gallery-grid{grid-template-columns:1fr 1fr}
       .gallery-card.large{min-height:380px}
     }
@@ -391,7 +416,8 @@
       .topbar-shell{border-radius:26px;padding:12px}
       .toolbar{justify-content:flex-start}
       .hero-card,.card,.family-card{padding:18px}
-      .hero-stats,.countdown,.family-grid,.venue-box,.gallery-grid{grid-template-columns:1fr}
+      .hero-stats,.countdown,.family-grid,.venue-box,.gallery-grid,.payment-card{grid-template-columns:1fr}
+      .payment-card{max-width:390px;margin:0 auto}.qr-frame{max-width:210px;margin:auto}
       .date-ribbon{gap:8px}
       .date-side{min-width:98px;font-size:18px}
       .date-box strong{font-size:54px}
@@ -403,6 +429,7 @@
     }
     @media print{
       .opening,.topbar,.overlay,.drawer,.petals{display:none!important}
+      .payment-card{animation:none}
       .page{opacity:1!important;transform:none!important}
       .container{width:100%}
       .hero,.section{padding:10px 0}
@@ -457,6 +484,7 @@
             </div>
           </div>
           <div class="toolbar">
+            <button id="musicButton" class="music-button" type="button" aria-pressed="false">♪ Bật nhạc nền</button>
             <button id="editButton">✎ Chỉnh sửa thông tin</button>
             <button id="shareButton">↗ Sao chép liên kết</button>
             <button id="printButton">⎙ In / Lưu PDF</button>
@@ -573,6 +601,27 @@
                   <p>Hãy cùng chụp ảnh, gửi lời chúc và tạo nên thật nhiều kỷ niệm đáng nhớ trong ngày trọng đại.</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal" aria-labelledby="giftHeading">
+        <div class="gift-layout">
+          <div class="gift-copy">
+            <span class="eyebrow">Wedding Gift</span>
+            <h4 id="giftHeading">Gửi một lời chúc mừng</h4>
+            <p>Niềm vui của chúng mình sẽ càng trọn vẹn hơn khi nhận được những lời chúc thân thương từ bạn. Nếu không thể đến chung vui, bạn có thể gửi yêu thương qua mã QR bên cạnh.</p>
+            <div class="recipient-ribbon">💛 Cảm ơn sự hiện diện và tình cảm của <strong id="giftRecipient">Quý khách</strong></div>
+          </div>
+          <div class="payment-card">
+            <div class="qr-frame"><img id="paymentQr" alt="Mã QR chuyển khoản mừng cưới" loading="lazy"></div>
+            <div class="payment-copy">
+              <div class="payment-kicker">Mừng cưới cô dâu &amp; chú rể</div>
+              <strong id="paymentAccountName">NGUYỄN VĂN MINH</strong>
+              <p><span>Ngân hàng</span> <b id="paymentBank">MB Bank</b></p>
+              <p><span>Số tài khoản</span> <b id="paymentAccountNo">0123456789</b></p>
+              <p class="payment-note" id="paymentNote">Mừng cưới Minh &amp; An</p>
             </div>
           </div>
         </div>
@@ -705,6 +754,18 @@
       <div class="field"><label for="brideMotherInput">Họ tên mẹ cô dâu</label><input id="brideMotherInput" name="brideMother"></div>
       <div class="field"><label for="brideFamilyAddressInput">Địa chỉ nhà gái</label><input id="brideFamilyAddressInput" name="brideFamilyAddress"></div>
 
+      <div class="group-title">💛 Mã QR mừng cưới</div>
+      <p class="guest-hint">QR được tạo theo chuẩn VietQR. Hãy thay thông tin mẫu trước khi gửi thiệp.</p>
+      <div class="two-col">
+        <div class="field"><label for="bankIdInput">Mã ngân hàng</label><input id="bankIdInput" name="bankId" maxlength="30" placeholder="Ví dụ: MB, VCB, TCB"></div>
+        <div class="field"><label for="accountNoInput">Số tài khoản</label><input id="accountNoInput" name="accountNo" inputmode="numeric" maxlength="30"></div>
+      </div>
+      <div class="field"><label for="accountNameInput">Tên chủ tài khoản</label><input id="accountNameInput" name="accountName" maxlength="100"></div>
+      <div class="two-col">
+        <div class="field"><label for="transferAmountInput">Số tiền gợi ý (tuỳ chọn)</label><input id="transferAmountInput" name="transferAmount" inputmode="numeric" maxlength="12" placeholder="Để trống nếu không cố định"></div>
+        <div class="field"><label for="transferNoteInput">Nội dung chuyển khoản</label><input id="transferNoteInput" name="transferNote" maxlength="150"></div>
+      </div>
+
       <button class="save-btn" type="submit">💍 Lưu thay đổi</button>
       <button class="muted-btn" type="button" id="resetButton">Khôi phục nội dung mẫu</button>
       <div class="notice" id="notice"></div>
@@ -725,6 +786,11 @@
       brideFather: 'Lê Văn Bình',
       brideMother: 'Phạm Thị Mai',
       brideFamilyAddress: 'Hà Nội',
+      bankId: 'MB',
+      accountNo: '0123456789',
+      accountName: 'NGUYỄN VĂN MINH',
+      transferAmount: '',
+      transferNote: 'Mừng cưới Minh & An',
       welcomeText: 'Trân trọng kính mời bạn và gia đình đến chung vui cùng chúng mình trong ngày lễ thành hôn. Hạnh phúc sẽ trọn vẹn hơn khi có sự hiện diện thân thương của bạn.',
       inviteMessage: 'Trân trọng kính mời Quý khách đến tham dự buổi lễ thành hôn của chúng tôi, để cùng chứng kiến khoảnh khắc thiêng liêng và chia sẻ niềm hạnh phúc trọn vẹn.'
     };
@@ -742,7 +808,7 @@
 
     function renderRecipient(){
       const name = recipientLabel();
-      for(const id of ['envelopeRecipient','coverRecipient','heroRecipient','invitationRecipient']) setText(id,name);
+      for(const id of ['envelopeRecipient','coverRecipient','heroRecipient','invitationRecipient','giftRecipient']) setText(id,name);
       setText('inviteMessage', (state.inviteMessage || defaults.inviteMessage).replaceAll('{khachMoi}', name).replaceAll('Quý khách', name));
       $('recipientInput').value = recipient;
       $('guestPreview').textContent = 'Thiệp hiển thị: Trân trọng kính mời ' + name;
@@ -837,6 +903,10 @@
       setText('brideFather', state.brideFather || defaults.brideFather);
       setText('brideMother', state.brideMother || defaults.brideMother);
       setText('brideFamilyAddress', state.brideFamilyAddress || defaults.brideFamilyAddress);
+      setText('paymentAccountName', state.accountName || defaults.accountName);
+      setText('paymentBank', state.bankId || defaults.bankId);
+      setText('paymentAccountNo', state.accountNo || defaults.accountNo);
+      setText('paymentNote', state.transferNote || defaults.transferNote);
       setText('galleryMainTitle', `Ảnh cưới của ${groom} & ${bride}`);
       setText('groomCaptionSub', `${groom} – lịch lãm, điềm đạm và chân thành.`);
       setText('brideCaptionSub', `${bride} – dịu dàng, thanh lịch và thật rạng rỡ.`);
@@ -858,24 +928,109 @@
       $('brideFatherInput').value = state.brideFather;
       $('brideMotherInput').value = state.brideMother;
       $('brideFamilyAddressInput').value = state.brideFamilyAddress;
+      $('bankIdInput').value = state.bankId;
+      $('accountNoInput').value = state.accountNo;
+      $('accountNameInput').value = state.accountName;
+      $('transferAmountInput').value = state.transferAmount;
+      $('transferNoteInput').value = state.transferNote;
       $('welcomeTextInput').value = state.welcomeText;
       $('inviteMessageInput').value = state.inviteMessage;
+
+      const bank = String(state.bankId || defaults.bankId).trim();
+      const account = String(state.accountNo || defaults.accountNo).trim();
+      const amount = String(state.transferAmount || '').replace(/\D/g,'');
+      const note = state.transferNote || defaults.transferNote;
+      const owner = state.accountName || defaults.accountName;
+      const qrUrl = `https://img.vietqr.io/image/${encodeURIComponent(bank)}-${encodeURIComponent(account)}-compact2.png?amount=${encodeURIComponent(amount)}&addInfo=${encodeURIComponent(note)}&accountName=${encodeURIComponent(owner)}`;
+      $('paymentQr').src = qrUrl;
     }
 
     function openDrawer(){ $('overlay').classList.add('show'); $('drawer').classList.add('show'); $('drawer').setAttribute('aria-hidden','false'); $('notice').textContent = ''; }
     function closeDrawer(){ $('overlay').classList.remove('show'); $('drawer').classList.remove('show'); $('drawer').setAttribute('aria-hidden','true'); }
 
+    // Giai điệu chuông nhẹ được tạo trực tiếp trong trình duyệt, nên thiệp không cần tải kèm tệp MP3.
+    let audioContext, musicGain, musicTimer, musicPlaying = false, musicStarting = false, musicStep = 0;
+    const musicNotes = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880, 698.46];
+    function updateMusicButton(){
+      const button = $('musicButton');
+      button.classList.toggle('playing', musicPlaying);
+      button.setAttribute('aria-pressed', String(musicPlaying));
+      button.textContent = musicPlaying ? 'Đang phát nhạc' : '♪ Bật nhạc nền';
+    }
+    function playChime(frequency){
+      if(!audioContext || !musicGain || !musicPlaying) return;
+      const now = audioContext.currentTime;
+      const oscillator = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, now);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
+      oscillator.connect(gain).connect(musicGain);
+      oscillator.start(now);
+      oscillator.stop(now + 1.55);
+    }
+    async function startMusic(){
+      if(musicPlaying || musicStarting) return;
+      musicStarting = true;
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if(!AudioContext){ musicStarting = false; return; }
+      audioContext = audioContext || new AudioContext();
+      if(!musicGain){
+        musicGain = audioContext.createGain();
+        musicGain.gain.value = 0.12;
+        musicGain.connect(audioContext.destination);
+      }
+      try{ await audioContext.resume(); }catch(_){ musicStarting = false; return; }
+      musicStarting = false;
+      musicPlaying = true;
+      updateMusicButton();
+      const nextNote = () => {
+        if(!musicPlaying) return;
+        playChime(musicNotes[musicStep++ % musicNotes.length]);
+        musicTimer = setTimeout(nextNote, 1800);
+      };
+      nextNote();
+    }
+    function stopMusic(){
+      musicPlaying = false;
+      clearTimeout(musicTimer);
+      updateMusicButton();
+    }
+    $('musicButton').addEventListener('click', () => musicPlaying ? stopMusic() : startMusic());
+
+    let revealObserver;
+    function initScrollReveal(){
+      const blocks = document.querySelectorAll('.reveal:not(.show)');
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        blocks.forEach(el => el.classList.add('show'));
+        return;
+      }
+      revealObserver?.disconnect();
+      revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('show');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold:0.14, rootMargin:'0px 0px -7% 0px' });
+      blocks.forEach(el => revealObserver.observe(el));
+    }
+
     let opened = false;
     function openInvitation(){
       if(opened) return;
       opened = true;
+      startMusic();
       $('envelopeStage').classList.add('is-open');
       $('openTrigger').disabled = true;
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       setTimeout(() => {
         $('opening').classList.add('done');
         $('page').classList.add('visible');
-        document.querySelectorAll('.reveal').forEach((el,i)=>setTimeout(()=>el.classList.add('show'), reduceMotion ? 0 : i*100));
+        initScrollReveal();
       }, reduceMotion ? 0 : 1480);
     }
 
@@ -995,6 +1150,11 @@
     initPetals();
     runCountdown();
     setInterval(runCountdown, 1000);
+
+    // Thử phát ngay khi khách vừa vào trang. Một số trình duyệt bắt buộc có thao tác
+    // đầu tiên của người dùng trước khi cho phát âm thanh, nên vẫn có phương án dự phòng.
+    startMusic();
+    document.addEventListener('pointerdown', () => startMusic(), { once:true });
   </script>
 </body>
 </html>
