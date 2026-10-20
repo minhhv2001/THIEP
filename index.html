@@ -46,6 +46,14 @@
       position:absolute;top:-10vh;font-size:18px;opacity:.12;animation:fall linear infinite;
       filter:blur(.2px);
     }
+    .pet-cats{position:fixed;inset:0;z-index:8;pointer-events:none;overflow:hidden}
+    .pet-cat{position:absolute;display:block;height:auto;filter:drop-shadow(0 10px 12px rgba(70,49,34,.18));transform-origin:center bottom;will-change:transform}
+    .pet-cat.gray{width:154px;right:14px;bottom:-8px;animation:grayCatPlay 5.8s ease-in-out infinite}
+    .pet-cat.black{width:92px;left:16px;bottom:10px;animation:blackCatPounce 4.8s ease-in-out infinite}
+    .pet-cat.white{width:88px;right:150px;bottom:17px;animation:whiteCatTease 5.2s ease-in-out infinite .6s}
+    @keyframes grayCatPlay{0%,100%{transform:translateY(0) rotate(-2deg)}45%{transform:translateY(-12px) rotate(2deg)}58%{transform:translateY(-3px) rotate(-1deg)}}
+    @keyframes blackCatPounce{0%,100%{transform:translateX(0) translateY(0) rotate(0)}38%{transform:translateX(18px) translateY(-9px) rotate(5deg)}52%{transform:translateX(25px) translateY(0) rotate(-2deg)}}
+    @keyframes whiteCatTease{0%,100%{transform:translateY(0) rotate(-2deg)}35%{transform:translateY(-11px) rotate(4deg)}55%{transform:translateY(-2px) rotate(-1deg)}}
     @keyframes fall{
       0%{transform:translate3d(0,-10vh,0) rotate(0deg)}
       100%{transform:translate3d(40px,110vh,0) rotate(280deg)}
@@ -98,8 +106,11 @@
       color:#fff7ec;
       font-weight:400;
     }
+    .opening-couple{font-size:18px;color:rgba(255,255,255,.94);margin:-2px 0 16px}
+    .opening-couple strong{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:600;color:#fff8eb}
+    #openingRecipient{font-family:"Cormorant Garamond",serif;font-size:clamp(38px,6vw,62px);font-style:italic;font-weight:600;letter-spacing:.4px}
     .opening p{margin:0 auto 24px;max-width:540px;line-height:1.8;font-size:14px;color:rgba(255,255,255,.88)}
-    .opening-date{display:inline-flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:13px;margin-bottom:26px}
+    .opening-date{display:inline-flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;max-width:100%;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:13px;margin-bottom:26px}
     .open-trigger{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       min-width:220px;padding:15px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.45);
@@ -145,6 +156,8 @@
       transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
     }
     .toolbar button:hover,.toolbar a:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(124,93,64,.15);background:#fffdfa}
+    .admin-only{display:none!important}
+    body.admin-mode .admin-only{display:inline-flex!important}
 
     .hero{
       padding:22px 0 28px;
@@ -247,7 +260,14 @@
     .family-card .icon{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#f7e8d2,#edd5b0);display:grid;place-items:center;font-size:26px;color:#8a6d48;margin-bottom:16px}
     .family-card small{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
     .family-card h4{font-family:"Cormorant Garamond", serif;font-size:30px;margin:0 0 12px;font-weight:600}
-    .family-card p{margin:7px 0;line-height:1.8;color:#6b5f56}
+    .family-details{display:grid;gap:9px;margin-top:15px}
+    .family-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.7);border:1px solid #f0e1d1}
+    .family-row span{flex:0 0 auto;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+    .family-row strong{font-size:14px;text-align:right;line-height:1.4}
+    .family-address{margin-top:12px;padding:13px 14px;border-top:1px dashed #ddc7aa;color:#716357;line-height:1.6;font-size:13px}
+    .family-address span{display:block;margin-bottom:3px;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted)}
+    .family-address strong{display:block;color:var(--text)}
+    .family-blessing{margin:22px auto 0;max-width:610px;text-align:center;padding:15px 24px;border-radius:999px;background:linear-gradient(90deg,rgba(255,250,244,.2),rgba(255,250,244,.9),rgba(255,250,244,.2));color:#8a7258;font-family:"Cormorant Garamond",serif;font-size:19px;border-top:1px solid #ead9c5;border-bottom:1px solid #ead9c5}
 
     .gallery-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:18px}
     .gallery-card{
@@ -260,6 +280,20 @@
     }
     .gallery-caption strong{display:block;font-size:15px;margin-bottom:4px}
     .gallery-caption span{font-size:12px;color:var(--muted)}
+    .memory-slideshow{grid-column:2/-1;min-height:540px;position:relative;border-radius:28px;overflow:hidden;border:1px solid #ead9c5;box-shadow:var(--shadow);background:#f1e6d7;cursor:grab;touch-action:pan-y}
+    .memory-slideshow.is-dragging{cursor:grabbing}
+    .memory-slide{position:absolute;inset:0;opacity:0;transform:scale(1.035);transition:opacity .9s ease,transform 5s ease;pointer-events:none}
+    .memory-slide.active{opacity:1;transform:scale(1);pointer-events:auto}
+    .memory-slide img{width:100%;height:100%;object-fit:cover}
+    .memory-overlay{position:absolute;inset:auto 0 0;padding:62px 18px 18px;background:linear-gradient(transparent,rgba(35,23,15,.65));color:#fff}
+    .memory-overlay strong{display:block;font-family:"Cormorant Garamond",serif;font-size:27px;font-weight:600}
+    .memory-overlay span{font-size:12px;color:rgba(255,255,255,.86)}
+    .slideshow-dots{position:absolute;z-index:2;right:16px;bottom:18px;display:flex;gap:7px}
+    .slideshow-dots button{width:9px;height:9px;padding:0;border:1px solid rgba(255,255,255,.8);border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:transform .25s ease,background .25s ease}
+    .slideshow-dots button.active{background:#fff;transform:scale(1.24)}
+    .slideshow-controls{position:absolute;z-index:2;left:16px;bottom:16px;display:flex;gap:8px}
+    .slideshow-controls button{width:38px;height:38px;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(47,32,21,.38);color:#fff;font-size:23px;line-height:1;cursor:pointer;backdrop-filter:blur(5px);transition:background .25s ease,transform .25s ease}
+    .slideshow-controls button:hover{background:rgba(47,32,21,.66);transform:translateY(-1px)}
 
     .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
     .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
@@ -292,6 +326,15 @@
     .music-button{border:none;border-radius:999px;padding:12px 16px;background:#fff;color:var(--text);cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 8px 22px rgba(124,93,64,.11);border:1px solid #efdfcc;white-space:nowrap}
     .music-button.playing{background:#f5e4cb;color:#765537;border-color:#dfbf94}
     .music-button.playing::before{content:"♫ ";animation:musicBeat .8s ease-in-out infinite alternate}
+    .wish-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;align-items:stretch}
+    .wish-copy{display:flex;flex-direction:column;justify-content:center;background:linear-gradient(145deg,#f4e4d0,#fff8ef)}
+    .wish-copy h4{font-family:"Cormorant Garamond",serif;font-size:38px;line-height:1.08;margin:9px 0 12px;font-weight:600}
+    .wish-copy p{color:#74655b;line-height:1.85;margin:0}
+    .wish-form .two-col{margin-top:0}
+    .wish-form textarea{min-height:110px}
+    .wish-submit{width:100%;border:0;border-radius:16px;padding:14px 18px;background:linear-gradient(180deg,#6f5c49,#5d4a3a);color:#fff;font-weight:700;cursor:pointer;margin-top:8px}
+    .wish-submit:disabled{opacity:.65;cursor:wait}
+    .wish-notice{min-height:20px;margin:12px 0 0;text-align:center;font-size:13px;color:#6c7c63;line-height:1.5}
     @keyframes giftFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
     @keyframes musicBeat{from{opacity:.45}to{opacity:1}}
 
@@ -397,18 +440,23 @@
       .envelope-stage{width:min(310px,78vw);height:193px;margin-top:0}
       .envelope-letter strong{font-size:22px}
       .cover-recipient{font-size:12px}
+      .pet-cat.gray{width:104px;right:2px;bottom:-4px}
+      .pet-cat.black{width:63px;left:2px;bottom:6px}
+      .pet-cat.white{width:60px;right:93px;bottom:8px}
     }
     @media(prefers-reduced-motion:reduce){
       .envelope-stage,.envelope-letter,.envelope-flap,.envelope-seal{transition-duration:.01ms!important}
+      .pet-cat{animation:none!important}
     }
 
     .reveal{opacity:0;transform:translateX(-56px);transition:opacity .78s cubic-bezier(.22,.8,.25,1), transform .78s cubic-bezier(.22,.8,.25,1);will-change:opacity,transform}
     .reveal.show{opacity:1;transform:none}
 
     @media (max-width: 980px){
-      .hero-card,.invite-layout,.bottom-grid,.gift-layout{grid-template-columns:1fr}
+      .hero-card,.invite-layout,.bottom-grid,.gift-layout,.wish-layout{grid-template-columns:1fr}
       .gallery-grid{grid-template-columns:1fr 1fr}
       .gallery-card.large{min-height:380px}
+      .memory-slideshow{min-height:380px}
     }
     @media (max-width: 720px){
       .container{width:min(100% - 16px, 1180px)}
@@ -424,11 +472,12 @@
       .opening-card{padding:28px 18px}
       .section-head h3{font-size:34px}
       .gallery-card.large{min-height:320px}
+      .memory-slideshow{grid-column:auto;min-height:420px}
       .toolbar button,.toolbar a{width:100%;text-align:center}
       .two-col{grid-template-columns:1fr}
     }
     @media print{
-      .opening,.topbar,.overlay,.drawer,.petals{display:none!important}
+      .opening,.topbar,.overlay,.drawer,.petals,.pet-cats{display:none!important}
       .payment-card{animation:none}
       .page{opacity:1!important;transform:none!important}
       .container{width:100%}
@@ -440,12 +489,21 @@
 </head>
 <body>
   <div class="petals" id="petals" aria-hidden="true"></div>
+  <div class="pet-cats" aria-hidden="true">
+    <img class="pet-cat black" src="assets/cat-black.png" alt="">
+    <img class="pet-cat white" src="assets/cat-white.png" alt="">
+    <img class="pet-cat gray" src="assets/cat-gray.png" alt="">
+  </div>
+  <audio id="backgroundMusic" preload="auto">
+    <source src="assets/young-and-beautiful.mp3" type="audio/mpeg">
+  </audio>
 
   <section class="opening" id="opening" aria-label="Màn hình mở thiệp cưới">
     <div class="opening-card">
-      <div class="opening-kicker">Wedding Invitation</div>
+      <div class="opening-kicker">Save the Date</div>
       <h1>Trân trọng kính mời</h1>
-      <div class="script" id="openingNames">Minh &amp; An</div>
+      <div class="script" id="openingRecipient">Anh chị em bạn bè</div>
+      <div class="opening-couple">đến chung vui cùng <strong id="openingNames">Minh &amp; An</strong></div>
       <div class="opening-date" id="openingDate">20.12.2026 · Hà Nội</div>
       <p>
         Chúng mình rất hạnh phúc khi sắp bước vào một chương mới của cuộc đời.
@@ -456,7 +514,7 @@
           <div class="envelope-back"></div>
           <div class="envelope-letter">
             <small>TRÂN TRỌNG KÍNH MỜI</small>
-            <strong id="envelopeRecipient">Quý khách</strong>
+            <strong id="envelopeRecipient">Anh chị em bạn bè</strong>
             <em id="envelopeNames">Minh &amp; An</em>
           </div>
           <div class="envelope-left"></div>
@@ -466,7 +524,7 @@
           <div class="envelope-seal">♡</div>
         </div>
       </div>
-      <div class="cover-recipient">Thư mời gửi đến <b id="coverRecipient">Quý khách</b></div>
+      <div class="cover-recipient">Thư mời gửi đến <b id="coverRecipient">Anh chị em bạn bè</b></div>
       <button class="open-trigger" id="openTrigger">✉ Mở phong thư mời</button>
       <div class="opening-note">Chạm vào phong bì hoặc nút để mở thiệp</div>
     </div>
@@ -485,9 +543,9 @@
           </div>
           <div class="toolbar">
             <button id="musicButton" class="music-button" type="button" aria-pressed="false">♪ Bật nhạc nền</button>
-            <button id="editButton">✎ Chỉnh sửa thông tin</button>
-            <button id="shareButton">↗ Sao chép liên kết</button>
-            <button id="printButton">⎙ In / Lưu PDF</button>
+            <button id="editButton" class="admin-only">✎ Chỉnh sửa thông tin</button>
+            <button id="shareButton" class="admin-only">↗ Sao chép liên kết</button>
+            <button id="printButton" class="admin-only">⎙ In / Lưu PDF</button>
           </div>
         </div>
       </div>
@@ -509,7 +567,7 @@
             <div class="script-name" id="heroGroom">Minh</div>
             <span class="and">and</span>
             <div class="script-name" id="heroBride">An</div>
-            <div class="recipient-ribbon">💌 Trân trọng kính mời <strong id="heroRecipient">Quý khách</strong></div>
+            <div class="recipient-ribbon">💌 Trân trọng kính mời <strong id="heroRecipient">Anh chị em bạn bè</strong></div>
             <p class="lead" id="welcomeText">
               Trân trọng kính mời bạn và gia đình đến chung vui cùng chúng mình trong ngày lễ thành hôn.
               Hạnh phúc sẽ trọn vẹn hơn khi có sự hiện diện thân thương của bạn.
@@ -547,13 +605,13 @@
           <div class="card invitation-main soft">
             <div class="recipient-note">
               <small>Thư mời dành riêng cho</small>
-              <strong id="invitationRecipient">Quý khách</strong>
+              <strong id="invitationRecipient">Anh chị em bạn bè</strong>
               <span>Hai gia đình trân trọng kính mời đến chung vui trong ngày lễ thành hôn.</span>
             </div>
             <div class="mini">Together with our families</div>
             <h4 id="mainNames">Minh &amp; An</h4>
             <p class="quote" id="inviteMessage">
-              Trân trọng kính mời Quý khách đến tham dự buổi lễ thành hôn của chúng tôi,
+              Trân trọng kính mời Anh chị em bạn bè đến tham dự buổi lễ thành hôn của chúng tôi,
               để cùng chứng kiến khoảnh khắc thiêng liêng và chia sẻ niềm hạnh phúc trọn vẹn.
             </p>
             <div class="date-ribbon">
@@ -612,7 +670,7 @@
             <span class="eyebrow">Wedding Gift</span>
             <h4 id="giftHeading">Gửi một lời chúc mừng</h4>
             <p>Niềm vui của chúng mình sẽ càng trọn vẹn hơn khi nhận được những lời chúc thân thương từ bạn. Nếu không thể đến chung vui, bạn có thể gửi yêu thương qua mã QR bên cạnh.</p>
-            <div class="recipient-ribbon">💛 Cảm ơn sự hiện diện và tình cảm của <strong id="giftRecipient">Quý khách</strong></div>
+            <div class="recipient-ribbon">💛 Cảm ơn sự hiện diện và tình cảm của <strong id="giftRecipient">Anh chị em bạn bè</strong></div>
           </div>
           <div class="payment-card">
             <div class="qr-frame"><img id="paymentQr" alt="Mã QR chuyển khoản mừng cưới" loading="lazy"></div>
@@ -627,6 +685,32 @@
         </div>
       </section>
 
+      <section class="section reveal" id="wishes" aria-labelledby="wishHeading">
+        <div class="wish-layout">
+          <div class="card wish-copy">
+            <span class="eyebrow">Love Notes</span>
+            <h4 id="wishHeading">Để lại lời chúc</h4>
+            <p>Một vài lời nhắn yêu thương từ bạn sẽ là món quà thật đẹp để chúng mình lưu giữ sau ngày cưới.</p>
+          </div>
+          <form class="card wish-form" id="wishForm">
+            <div class="field">
+              <label for="wishName">Tên / cách xưng hô</label>
+              <input id="wishName" name="name" type="text" maxlength="100" required autocomplete="name" placeholder="Ví dụ: Anh Hùng và gia đình">
+            </div>
+            <div class="field">
+              <label for="wishMessage">Lời chúc của bạn</label>
+              <textarea id="wishMessage" name="message" maxlength="800" required placeholder="Gửi một lời chúc thật ấm áp đến cô dâu và chú rể nhé..."></textarea>
+            </div>
+            <div class="field" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;pointer-events:none">
+              <label for="wishWebsite">Website</label>
+              <input id="wishWebsite" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <button class="wish-submit" id="wishSubmit" type="submit">💌 Gửi lời chúc</button>
+            <p class="wish-notice" id="wishNotice" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
       <section class="section reveal">
         <div class="section-head">
           <span class="eyebrow">Families</span>
@@ -638,19 +722,24 @@
             <div class="icon">🤵</div>
             <small>Nhà trai</small>
             <h4 id="groomFamilyTitle">Gia đình chú rể</h4>
-            <p>Ông: <strong id="groomFather">Nguyễn Văn Hùng</strong></p>
-            <p>Bà: <strong id="groomMother">Trần Thị Hoa</strong></p>
-            <p>Địa chỉ: <strong id="groomFamilyAddress">Hà Nội</strong></p>
+            <div class="family-details">
+              <div class="family-row"><span>Thân phụ</span><strong id="groomFather">Hà Văn Hưởng</strong></div>
+              <div class="family-row"><span>Thân mẫu</span><strong id="groomMother">Vũ Thị Hà</strong></div>
+            </div>
+            <div class="family-address"><span>Địa chỉ gia đình</span><strong id="groomFamilyAddress">Tổ Dân Phố 1 - Thị Trấn Triệu Sơn, Thanh Hóa</strong></div>
           </div>
           <div class="family-card">
             <div class="icon">👰</div>
             <small>Nhà gái</small>
             <h4 id="brideFamilyTitle">Gia đình cô dâu</h4>
-            <p>Ông: <strong id="brideFather">Lê Văn Bình</strong></p>
-            <p>Bà: <strong id="brideMother">Phạm Thị Mai</strong></p>
-            <p>Địa chỉ: <strong id="brideFamilyAddress">Hà Nội</strong></p>
+            <div class="family-details">
+              <div class="family-row"><span>Thân phụ</span><strong id="brideFather">Hà Quang Thức</strong></div>
+              <div class="family-row"><span>Thân mẫu</span><strong id="brideMother">Đào Thị Lan</strong></div>
+            </div>
+            <div class="family-address"><span>Địa chỉ gia đình</span><strong id="brideFamilyAddress">Tổ Dân Phố 3 - Thị Trấn Triệu Sơn, Thanh Hóa</strong></div>
           </div>
         </div>
+        <div class="family-blessing">Hai gia đình hân hạnh chào đón và cảm ơn sự hiện diện của quý vị.</div>
       </section>
 
       <section class="section reveal">
@@ -664,13 +753,24 @@
             <img src="assets/couple-main.png" alt="Ảnh cưới chính" />
             <div class="gallery-caption"><strong id="galleryMainTitle">Ảnh cưới của Minh &amp; An</strong><span id="galleryMainSub">Một khởi đầu dịu dàng, tinh khôi và đầy yêu thương.</span></div>
           </div>
-          <div class="gallery-card">
-            <img src="assets/groom.jpg" alt="Ảnh chú rể" />
-            <div class="gallery-caption"><strong id="groomCaption">Chú rể</strong><span id="groomCaptionSub">Lịch lãm, điềm đạm và chân thành.</span></div>
-          </div>
-          <div class="gallery-card">
-            <img src="assets/bride.jpg" alt="Ảnh cô dâu" />
-            <div class="gallery-caption"><strong id="brideCaption">Cô dâu</strong><span id="brideCaptionSub">Dịu dàng, thanh lịch và thật rạng rỡ.</span></div>
+          <div class="memory-slideshow" id="memorySlideshow" aria-label="Slideshow kỷ niệm của Minh và An">
+            <div class="memory-slide active"><img src="assets/memory-1.jpg" alt="Khoảnh khắc kỷ niệm của Minh và An 1"></div>
+            <div class="memory-slide"><img src="assets/memory-2.jpg" alt="Khoảnh khắc kỷ niệm của Minh và An 2"></div>
+            <div class="memory-slide"><img src="assets/memory-3.jpg" alt="Khoảnh khắc kỷ niệm của Minh và An 3"></div>
+            <div class="memory-slide"><img src="assets/memory-4.jpg" alt="Khoảnh khắc kỷ niệm của Minh và An 4"></div>
+            <div class="memory-slide"><img src="assets/memory-5.jpg" alt="Khoảnh khắc kỷ niệm của Minh và An 5"></div>
+            <div class="memory-overlay"><strong>Những ngày bên nhau</strong><span id="memoryCount">1 / 5</span></div>
+            <div class="slideshow-controls" aria-label="Điều khiển slideshow">
+              <button type="button" class="slide-prev" aria-label="Ảnh trước">‹</button>
+              <button type="button" class="slide-next" aria-label="Ảnh tiếp theo">›</button>
+            </div>
+            <div class="slideshow-dots" aria-label="Chọn ảnh kỷ niệm">
+              <button class="active" type="button" aria-label="Xem ảnh 1" aria-current="true"></button>
+              <button type="button" aria-label="Xem ảnh 2"></button>
+              <button type="button" aria-label="Xem ảnh 3"></button>
+              <button type="button" aria-label="Xem ảnh 4"></button>
+              <button type="button" aria-label="Xem ảnh 5"></button>
+            </div>
           </div>
         </div>
       </section>
@@ -695,8 +795,8 @@
             <p class="quote">Bạn có thể nhanh chóng mở địa chỉ trên bản đồ, in thiệp hoặc chia sẻ thiệp cưới này cho người thân và bạn bè.</p>
             <div class="cta-row">
               <a id="mapLink" href="#" target="_blank" rel="noopener">📍 Xem địa chỉ</a>
-              <button class="ghost" id="copyButton">🔗 Sao chép link thiệp</button>
-              <button class="ghost" id="editBottomButton">✎ Chỉnh sửa nội dung</button>
+              <button class="ghost admin-only" id="copyButton">🔗 Sao chép link thiệp</button>
+              <button class="ghost admin-only" id="editBottomButton">✎ Chỉnh sửa nội dung</button>
             </div>
             <p class="quote" style="margin-top:18px" id="closingLine">
               Chúng mình rất mong được đón tiếp bạn trong ngày đặc biệt này. Xin chân thành cảm ơn!
@@ -722,9 +822,9 @@
     <form id="detailForm">
       <div class="guest-panel">
         <div class="group-title">💌 Khách mời nhận thiệp</div>
-        <p>Để trống sẽ hiển thị “Quý khách”. Điền riêng từng người để tạo liên kết có lời mời đích danh.</p>
+        <p>Để trống sẽ hiển thị “Anh chị em bạn bè”. Điền riêng từng người để tạo liên kết có lời mời đích danh.</p>
         <div class="field"><label for="recipientInput">Tên / cách xưng hô</label><input id="recipientInput" type="text" maxlength="100" autocomplete="off" placeholder="Ví dụ: Anh Hùng và gia đình"></div>
-        <div class="guest-preview" id="guestPreview" aria-live="polite">Thiệp hiển thị: Trân trọng kính mời Quý khách</div>
+        <div class="guest-preview" id="guestPreview" aria-live="polite">Thiệp hiển thị: Trân trọng kính mời Anh chị em bạn bè</div>
         <button class="guest-copy" id="guestLinkButton" type="button">🔗 Lưu &amp; sao chép link riêng cho khách</button>
         <p class="guest-hint">Lưu ý: cần đưa trang web lên hosting trước khi gửi link cho người khác. Tên khách được gắn vào đường link, không tự lấy từ máy của họ.</p>
       </div>
@@ -743,6 +843,7 @@
       </div>
       <div class="field"><label for="venue">Tên địa điểm</label><input id="venue" name="venue"></div>
       <div class="field"><label for="address">Địa chỉ</label><textarea id="address" name="address"></textarea></div>
+      <div class="field"><label for="mapUrlInput">Link Google Maps</label><input id="mapUrlInput" name="mapUrl" type="url" placeholder="https://maps.app.goo.gl/..."></div>
 
       <div class="group-title">Gia đình nhà trai</div>
       <div class="field"><label for="groomFatherInput">Họ tên bố chú rể</label><input id="groomFatherInput" name="groomFather"></div>
@@ -766,6 +867,10 @@
         <div class="field"><label for="transferNoteInput">Nội dung chuyển khoản</label><input id="transferNoteInput" name="transferNote" maxlength="150"></div>
       </div>
 
+      <div class="group-title">💌 Lời chúc từ khách mời</div>
+      <p class="guest-hint">Dán URL triển khai Apps Script có đuôi <code>/exec</code> để lời chúc được ghi vào Google Sheet. Để trống khi chưa kết nối.</p>
+      <div class="field"><label for="guestbookEndpointInput">URL nhận lời chúc</label><input id="guestbookEndpointInput" name="guestbookEndpoint" type="url" maxlength="500" placeholder="https://script.google.com/macros/s/.../exec"></div>
+
       <button class="save-btn" type="submit">💍 Lưu thay đổi</button>
       <button class="muted-btn" type="button" id="resetButton">Khôi phục nội dung mẫu</button>
       <div class="notice" id="notice"></div>
@@ -774,32 +879,40 @@
 
   <script>
     const defaults = {
-      groom: 'Minh',
-      bride: 'An',
-      date: '2026-12-20',
-      time: '11:00',
-      venue: 'Trung tâm Tiệc cưới The Garden',
-      address: 'Hà Nội, Việt Nam',
-      groomFather: 'Nguyễn Văn Hùng',
-      groomMother: 'Trần Thị Hoa',
-      groomFamilyAddress: 'Hà Nội',
-      brideFather: 'Lê Văn Bình',
-      brideMother: 'Phạm Thị Mai',
-      brideFamilyAddress: 'Hà Nội',
+      groom: 'Văn Minh',
+      bride: 'Hà Oanh',
+      date: '2027-03-01',
+      time: '10:00',
+      venue: 'Tiệc cưới tại nhà trai',
+      address: 'Tổ Dân Phố 1 - Thị Trấn Triệu Sơn, Thanh Hóa',
+      mapUrl: 'https://maps.app.goo.gl/AJRRtWLg1YuVoL9Y6',
+      groomFather: 'Hà Văn Hưởng',
+      groomMother: 'Vũ Thị Hà',
+      groomFamilyAddress: 'Tổ Dân Phố 1 - Thị Trấn Triệu Sơn, Thanh Hóa',
+      brideFather: 'Hà Quang Thức',
+      brideMother: 'Đào Thị Lan',
+      brideFamilyAddress: 'Tổ Dân Phố 3 - Thị Trấn Triệu Sơn, Thanh Hóa',
       bankId: 'MB',
-      accountNo: '0123456789',
-      accountName: 'NGUYỄN VĂN MINH',
+      accountNo: '4792220062001',
+      accountName: 'HÀ VĂN MINH',
       transferAmount: '',
-      transferNote: 'Mừng cưới Minh & An',
+      transferNote: 'Mừng cưới Minh & Oanh',
+      guestbookEndpoint: '',
       welcomeText: 'Trân trọng kính mời bạn và gia đình đến chung vui cùng chúng mình trong ngày lễ thành hôn. Hạnh phúc sẽ trọn vẹn hơn khi có sự hiện diện thân thương của bạn.',
-      inviteMessage: 'Trân trọng kính mời Quý khách đến tham dự buổi lễ thành hôn của chúng tôi, để cùng chứng kiến khoảnh khắc thiêng liêng và chia sẻ niềm hạnh phúc trọn vẹn.'
+      inviteMessage: 'Trân trọng kính mời {khachMoi} đến tham dự buổi lễ thành hôn của chúng tôi, để cùng chứng kiến khoảnh khắc thiêng liêng và chia sẻ niềm hạnh phúc trọn vẹn.'
     };
 
     const $ = (id) => document.getElementById(id);
     let state = { ...defaults };
     let recipient = '';
+    let isAdmin = false;
     const sanitizeRecipient = value => String(value || '').trim().slice(0,100);
-    const recipientLabel = () => recipient || 'Quý khách';
+    const recipientLabel = () => recipient || 'Anh chị em bạn bè';
+
+    function loadAdminMode(){
+      isAdmin = new URLSearchParams(location.search).get('admin') === '1';
+      document.body.classList.toggle('admin-mode', isAdmin);
+    }
 
     function loadRecipient(){
       const params = new URLSearchParams(location.search);
@@ -808,7 +921,7 @@
 
     function renderRecipient(){
       const name = recipientLabel();
-      for(const id of ['envelopeRecipient','coverRecipient','heroRecipient','invitationRecipient','giftRecipient']) setText(id,name);
+      for(const id of ['openingRecipient','envelopeRecipient','coverRecipient','heroRecipient','invitationRecipient','giftRecipient']) setText(id,name);
       setText('inviteMessage', (state.inviteMessage || defaults.inviteMessage).replaceAll('{khachMoi}', name).replaceAll('Quý khách', name));
       $('recipientInput').value = recipient;
       $('guestPreview').textContent = 'Thiệp hiển thị: Trân trọng kính mời ' + name;
@@ -833,7 +946,7 @@
           state = { ...defaults, ...Object.fromEntries(Object.entries(fromQuery).filter(([k,v]) => k in defaults && typeof v === 'string')) };
           return;
         }
-        const saved = localStorage.getItem('wedding-invite-pro-v2');
+        const saved = localStorage.getItem('wedding-invite-pro-v3');
         if(saved){
           const parsed = JSON.parse(saved);
           state = { ...defaults, ...Object.fromEntries(Object.entries(parsed).filter(([k,v]) => k in defaults && typeof v === 'string')) };
@@ -842,11 +955,14 @@
     }
 
     function saveState(){
-      try{ localStorage.setItem('wedding-invite-pro-v2', JSON.stringify(state)); }
+      try{ localStorage.setItem('wedding-invite-pro-v3', JSON.stringify(state)); }
       catch(_){ /* Vẫn cho phép tạo thiệp và chia sẻ link khi trình duyệt chặn lưu trữ. */ }
     }
 
-    function setText(id, value){ const el = $(id); if(el) el.textContent = value || '—'; }
+    function setText(id, value){
+      const el = $(id);
+      if(el) el.textContent = value === undefined || value === null || value === '' ? '—' : value;
+    }
 
     function formatDateParts(dateStr){
       const d = new Date(dateStr + 'T12:00:00');
@@ -908,13 +1024,11 @@
       setText('paymentAccountNo', state.accountNo || defaults.accountNo);
       setText('paymentNote', state.transferNote || defaults.transferNote);
       setText('galleryMainTitle', `Ảnh cưới của ${groom} & ${bride}`);
-      setText('groomCaptionSub', `${groom} – lịch lãm, điềm đạm và chân thành.`);
-      setText('brideCaptionSub', `${bride} – dịu dàng, thanh lịch và thật rạng rỡ.`);
       setText('closingLine', `Chúng mình rất mong được đón tiếp bạn trong ngày đặc biệt này. Xin chân thành cảm ơn!`);
       document.title = `Thiệp cưới | ${groom} & ${bride}`;
 
       const addressQuery = encodeURIComponent(state.address || defaults.address);
-      $('mapLink').href = `https://www.google.com/maps/search/?api=1&query=${addressQuery}`;
+      $('mapLink').href = state.mapUrl || `https://www.google.com/maps/search/?api=1&query=${addressQuery}`;
 
       $('groom').value = state.groom;
       $('bride').value = state.bride;
@@ -922,6 +1036,7 @@
       $('time').value = state.time;
       $('venue').value = state.venue;
       $('address').value = state.address;
+      $('mapUrlInput').value = state.mapUrl;
       $('groomFatherInput').value = state.groomFather;
       $('groomMotherInput').value = state.groomMother;
       $('groomFamilyAddressInput').value = state.groomFamilyAddress;
@@ -933,6 +1048,7 @@
       $('accountNameInput').value = state.accountName;
       $('transferAmountInput').value = state.transferAmount;
       $('transferNoteInput').value = state.transferNote;
+      $('guestbookEndpointInput').value = state.guestbookEndpoint;
       $('welcomeTextInput').value = state.welcomeText;
       $('inviteMessageInput').value = state.inviteMessage;
 
@@ -945,60 +1061,50 @@
       $('paymentQr').src = qrUrl;
     }
 
-    function openDrawer(){ $('overlay').classList.add('show'); $('drawer').classList.add('show'); $('drawer').setAttribute('aria-hidden','false'); $('notice').textContent = ''; }
+    function openDrawer(){
+      if(!isAdmin) return;
+      $('overlay').classList.add('show'); $('drawer').classList.add('show'); $('drawer').setAttribute('aria-hidden','false'); $('notice').textContent = '';
+    }
     function closeDrawer(){ $('overlay').classList.remove('show'); $('drawer').classList.remove('show'); $('drawer').setAttribute('aria-hidden','true'); }
 
-    // Giai điệu chuông nhẹ được tạo trực tiếp trong trình duyệt, nên thiệp không cần tải kèm tệp MP3.
-    let audioContext, musicGain, musicTimer, musicPlaying = false, musicStarting = false, musicStep = 0;
-    const musicNotes = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880, 698.46];
+    let musicPlaying = false;
+    const musicClipStart = 2 * 60 + 27;
     function updateMusicButton(){
       const button = $('musicButton');
       button.classList.toggle('playing', musicPlaying);
       button.setAttribute('aria-pressed', String(musicPlaying));
       button.textContent = musicPlaying ? 'Đang phát nhạc' : '♪ Bật nhạc nền';
     }
-    function playChime(frequency){
-      if(!audioContext || !musicGain || !musicPlaying) return;
-      const now = audioContext.currentTime;
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(frequency, now);
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.03);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
-      oscillator.connect(gain).connect(musicGain);
-      oscillator.start(now);
-      oscillator.stop(now + 1.55);
-    }
     async function startMusic(){
-      if(musicPlaying || musicStarting) return;
-      musicStarting = true;
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if(!AudioContext){ musicStarting = false; return; }
-      audioContext = audioContext || new AudioContext();
-      if(!musicGain){
-        musicGain = audioContext.createGain();
-        musicGain.gain.value = 0.12;
-        musicGain.connect(audioContext.destination);
+      const audio = $('backgroundMusic');
+      audio.volume = 0.32;
+      if(audio.readyState < 1){
+        await new Promise(resolve => audio.addEventListener('loadedmetadata', resolve, { once:true }));
       }
-      try{ await audioContext.resume(); }catch(_){ musicStarting = false; return; }
-      musicStarting = false;
-      musicPlaying = true;
-      updateMusicButton();
-      const nextNote = () => {
-        if(!musicPlaying) return;
-        playChime(musicNotes[musicStep++ % musicNotes.length]);
-        musicTimer = setTimeout(nextNote, 1800);
-      };
-      nextNote();
+      if(Number.isFinite(audio.duration) && audio.duration > musicClipStart && audio.currentTime < musicClipStart){
+        audio.currentTime = musicClipStart;
+      }
+      try{
+        await audio.play();
+        musicPlaying = true;
+        updateMusicButton();
+      }catch(_){
+        musicPlaying = false;
+        updateMusicButton();
+      }
     }
     function stopMusic(){
+      $('backgroundMusic').pause();
       musicPlaying = false;
-      clearTimeout(musicTimer);
       updateMusicButton();
     }
     $('musicButton').addEventListener('click', () => musicPlaying ? stopMusic() : startMusic());
+    $('backgroundMusic').addEventListener('ended', async () => {
+      const audio = $('backgroundMusic');
+      if(!musicPlaying) return;
+      audio.currentTime = musicClipStart;
+      try{ await audio.play(); }catch(_){ musicPlaying = false; updateMusicButton(); }
+    });
 
     let revealObserver;
     function initScrollReveal(){
@@ -1054,7 +1160,7 @@
     }
 
     $('recipientInput').addEventListener('input', () => {
-      $('guestPreview').textContent = 'Thiệp hiển thị: Trân trọng kính mời ' + (sanitizeRecipient($('recipientInput').value) || 'Quý khách');
+      $('guestPreview').textContent = 'Thiệp hiển thị: Trân trọng kính mời ' + (sanitizeRecipient($('recipientInput').value) || 'Anh chị em bạn bè');
     });
 
     $('detailForm').addEventListener('submit', (e)=>{
@@ -1066,7 +1172,7 @@
 
     $('resetButton').addEventListener('click', ()=>{
       state = { ...defaults };
-      try{ localStorage.removeItem('wedding-invite-pro-v2'); }catch(_){}
+      try{ localStorage.removeItem('wedding-invite-pro-v3'); }catch(_){}
       render();
       $('notice').textContent = 'Đã khôi phục nội dung mẫu';
     });
@@ -1077,6 +1183,7 @@
       const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
       const url = new URL(location.href);
       url.hash = '';
+      url.searchParams.delete('admin');
       url.searchParams.set('invite', encoded);
       if(recipient) url.searchParams.set('to', recipient);
       else url.searchParams.delete('to');
@@ -1115,6 +1222,34 @@
     $('shareButton').addEventListener('click', ()=>copyShareLink($('shareButton')));
     $('copyButton').addEventListener('click', ()=>copyShareLink($('copyButton')));
 
+    $('wishForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const notice = $('wishNotice');
+      const submit = $('wishSubmit');
+      const endpoint = String(state.guestbookEndpoint || '').trim();
+      if(!endpoint){
+        notice.textContent = 'Lời chúc đang chờ được kết nối với nơi lưu trữ. Vui lòng thử lại sau nhé.';
+        return;
+      }
+
+      const form = event.currentTarget;
+      const data = new FormData(form);
+      data.append('recipient', recipientLabel());
+      submit.disabled = true;
+      submit.textContent = 'Đang gửi lời chúc...';
+      notice.textContent = '';
+      try{
+        await fetch(endpoint, { method:'POST', mode:'no-cors', body:data });
+        form.reset();
+        notice.textContent = '✓ Cảm ơn bạn! Lời chúc đã được gửi đến cô dâu và chú rể.';
+      }catch(_){
+        notice.textContent = 'Chưa gửi được lời chúc. Bạn thử lại giúp chúng mình nhé.';
+      }finally{
+        submit.disabled = false;
+        submit.textContent = '💌 Gửi lời chúc';
+      }
+    });
+
     function runCountdown(){
       const target = new Date((state.date || defaults.date) + 'T' + (state.time || defaults.time) + ':00');
       const diff = target.getTime() - Date.now();
@@ -1144,10 +1279,62 @@
       }
     }
 
+    function initMemorySlideshow(){
+      const slideshow = $('memorySlideshow');
+      if(!slideshow) return;
+      const slides = [...slideshow.querySelectorAll('.memory-slide')];
+      const dots = [...slideshow.querySelectorAll('.slideshow-dots button')];
+      let current = 0;
+      let timer;
+      let dragStart = null;
+      const show = index => {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === current);
+          dot.setAttribute('aria-current', i === current ? 'true' : 'false');
+        });
+        setText('memoryCount', `${current + 1} / ${slides.length}`);
+      };
+      const start = () => { clearInterval(timer); timer = setInterval(() => show(current + 1), 2600); };
+      dots.forEach((dot, index) => dot.addEventListener('click', () => { show(index); start(); }));
+      slideshow.querySelector('.slide-prev').addEventListener('click', () => { show(current - 1); start(); });
+      slideshow.querySelector('.slide-next').addEventListener('click', () => { show(current + 1); start(); });
+      slideshow.addEventListener('mouseenter', () => clearInterval(timer));
+      slideshow.addEventListener('mouseleave', start);
+      slideshow.addEventListener('focusin', () => clearInterval(timer));
+      slideshow.addEventListener('focusout', start);
+      const beginDrag = clientX => {
+        dragStart = clientX;
+        slideshow.classList.add('is-dragging');
+        clearInterval(timer);
+      };
+      const finishDrag = clientX => {
+        if(dragStart === null) return;
+        const distance = clientX - dragStart;
+        if(Math.abs(distance) > 35) show(current + (distance < 0 ? 1 : -1));
+        dragStart = null;
+        slideshow.classList.remove('is-dragging');
+        start();
+      };
+      slideshow.addEventListener('touchstart', event => beginDrag(event.touches[0].clientX), { passive:true });
+      slideshow.addEventListener('touchend', event => finishDrag(event.changedTouches[0].clientX), { passive:true });
+      slideshow.addEventListener('touchcancel', () => { dragStart = null; slideshow.classList.remove('is-dragging'); start(); });
+      slideshow.addEventListener('mousedown', event => {
+        if(event.button !== 0) return;
+        beginDrag(event.clientX);
+        const finishMouseDrag = upEvent => finishDrag(upEvent.clientX);
+        document.addEventListener('mouseup', finishMouseDrag, { once:true });
+      });
+      start();
+    }
+
+    loadAdminMode();
     loadState();
     loadRecipient();
     render();
     initPetals();
+    initMemorySlideshow();
     runCountdown();
     setInterval(runCountdown, 1000);
 

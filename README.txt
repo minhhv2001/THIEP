@@ -13,13 +13,26 @@ THIỆP CƯỚI ONLINE – PHIÊN BẢN PHONG BÌ CÁ NHÂN HÓA
 6. Mở trang đã được đăng công khai (https://...), điền tên khách ở
    “Khách mời nhận thiệp”, bấm “Lưu & sao chép link riêng cho khách”.
    Thay tên khác và tạo link mới cho từng khách.
-7. Nếu không điền khách mời, thiệp hiện “Quý khách”.
+7. Nếu không điền khách mời, thiệp hiện “Anh chị em bạn bè”.
+
+CHẾ ĐỘ ADMIN:
+- Link khách mời thông thường chỉ hiện nội dung thiệp, nút nhạc và bản đồ.
+- Để chỉnh sửa thiệp, thêm `?admin=1` vào cuối link. Ví dụ:
+  `https://ten-mien-cua-ban.com/?admin=1`
+- Khi sao chép link gửi khách, tham số admin được tự động loại bỏ.
+- Đây là chế độ ẩn giao diện cho website tĩnh, không phải cơ chế đăng nhập bảo mật.
 
 MỪNG CƯỚI & NHẠC:
 - Trong “Chỉnh sửa thông tin”, thay mã ngân hàng, số tài khoản và tên chủ tài khoản
   mẫu bằng thông tin thật. QR được tạo theo chuẩn VietQR; có thể để trống số tiền gợi ý.
-- Nhạc nền chuông nhẹ tự bật sau khi khách nhấn mở phong thư (do trình duyệt yêu cầu
-  thao tác của người dùng trước khi phát âm thanh). Có nút bật/tắt nhạc trên thanh đầu trang.
+- Nhạc nền dùng tệp `assets/young-and-beautiful.mp3`. Trang thử phát ngay khi tải;
+  một số trình duyệt chỉ cho phép phát sau thao tác chạm/click đầu tiên của khách.
+  Có nút bật/tắt nhạc trên thanh đầu trang.
+
+LỜI CHÚC TỪ KHÁCH:
+- Mã Google Apps Script đã được chuẩn bị trong `google-apps-script/Code.gs` cho Sheet lời chúc.
+- Làm theo `google-apps-script/SETUP.md`, sau đó gửi URL Web App kết thúc bằng `/exec`
+  để kích hoạt form lời chúc trên thiệp.
 
 KỸ THUẬT CÁ NHÂN HÓA:
 - Link dùng tham số ?to=... để hiển thị đúng tên khách mời.
@@ -34,5 +47,6 @@ KỸ THUẬT CÁ NHÂN HÓA:
 
 TÀI SẢN:
 - assets/couple-main.png: ảnh cô dâu và chú rể chính, đã dùng đúng ảnh yêu cầu.
-- assets/groom.jpg: ảnh riêng chú rể.
-- assets/bride.jpg: ảnh riêng cô dâu.
+- assets/memory-1.jpg đến assets/memory-5.jpg: ảnh kỷ niệm cho slideshow tự động.
+- assets/young-and-beautiful.mp3: nhạc nền của thiệp.
+- assets/cat-white.png, assets/cat-black.png, assets/cat-gray.png: ba linh vật mèo hoạt hình trong thiệp.
