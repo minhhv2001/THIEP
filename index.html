@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5ede3" />
+  <title>Thiệp cưới | Minh & An</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6efe7;
+      --paper:#fffaf4;
+      --soft:#fff5ea;
+      --line:#e8d7c2;
+      --gold:#b18a59;
+      --gold-2:#d7b98d;
+      --text:#54473f;
+      --muted:#87786e;
+      --green:#87957e;
+      --shadow:0 24px 80px rgba(97,74,47,.13);
+      --radius:28px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.9), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(226,211,188,.65), transparent 28%),
+        linear-gradient(180deg, #fbf7f1 0%, #f5ede3 45%, #f4ece3 100%);
+      overflow-x:hidden;
+    }
+    img{max-width:100%;display:block}
+    button,input,textarea{font:inherit}
+    a{text-decoration:none;color:inherit}
+    .hidden{display:none!important}
+
+    .petals{
+      position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+    }
+    .petal{
+      position:absolute;top:-10vh;font-size:18px;opacity:.12;animation:fall linear infinite;
+      filter:blur(.2px);
+    }
+    @keyframes fall{
+      0%{transform:translate3d(0,-10vh,0) rotate(0deg)}
+      100%{transform:translate3d(40px,110vh,0) rotate(280deg)}
+    }
+
+    .opening{
+      position:fixed;inset:0;z-index:30;
+      display:grid;place-items:center;
+      background:
+        linear-gradient(180deg, rgba(42,28,20,.48), rgba(42,28,20,.62)),
+        url('assets/couple-main.png') center/cover no-repeat;
+      transition:opacity .95s ease, visibility .95s ease;
+    }
+    .opening.done{opacity:0;visibility:hidden;pointer-events:none}
+    .opening::before,
+    .opening::after{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(circle at 20% 20%, rgba(255,255,255,.14), transparent 28%);
+      animation:pulse 8s ease-in-out infinite;
+    }
+    .opening::after{animation-delay:1.8s;opacity:.8}
+    @keyframes pulse{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
+    .opening-card{
+      position:relative;z-index:2;
+      width:min(92vw, 680px);
+      text-align:center;
+      color:#fff;
+      padding:36px 28px 30px;
+      border:1px solid rgba(255,255,255,.26);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      backdrop-filter: blur(8px);
+      border-radius:36px;
+      box-shadow:0 35px 100px rgba(0,0,0,.28);
+    }
+    .opening-kicker{
+      letter-spacing:4px;text-transform:uppercase;font-size:12px;font-weight:600;opacity:.92
+    }
+    .opening h1{
+      font-family:"Cormorant Garamond", serif;
+      font-size:clamp(40px, 7vw, 76px);
+      line-height:1;
+      margin:14px 0 6px;
+      font-weight:600;
+    }
+    .opening .script{
+      font-family:"Great Vibes", cursive;
+      font-size:clamp(42px, 8vw, 78px);
+      margin:10px 0 12px;
+      color:#fff7ec;
+      font-weight:400;
+    }
+    .opening p{margin:0 auto 24px;max-width:540px;line-height:1.8;font-size:14px;color:rgba(255,255,255,.88)}
+    .opening-date{display:inline-flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);font-size:13px;margin-bottom:26px}
+    .open-trigger{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-width:220px;padding:15px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.45);
+      background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(244,231,214,.95));
+      color:#745438;font-weight:700;cursor:pointer;transition:transform .35s ease, box-shadow .35s ease, background .35s ease;
+      box-shadow:0 14px 34px rgba(0,0,0,.16);
+    }
+    .open-trigger:hover{transform:translateY(-2px);box-shadow:0 20px 38px rgba(0,0,0,.18)}
+    .opening-note{margin-top:14px;font-size:12px;letter-spacing:.5px;color:rgba(255,255,255,.78)}
+
+    .page{
+      position:relative;z-index:1;opacity:0;transform:translateY(24px);transition:opacity 1.1s ease, transform 1.1s ease;
+    }
+    .page.visible{opacity:1;transform:none}
+
+    .container{width:min(1180px, calc(100% - 24px));margin:0 auto}
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;gap:16px;
+      padding:24px 0 10px;position:sticky;top:0;z-index:12;
+    }
+    .topbar-shell{
+      backdrop-filter: blur(10px);
+      background:rgba(250,244,236,.78);
+      border:1px solid rgba(225,206,183,.75);
+      border-radius:999px;
+      box-shadow:0 14px 32px rgba(111,86,59,.08);
+      display:flex;justify-content:space-between;align-items:center;gap:14px;
+      padding:10px 12px 10px 20px;width:100%;
+    }
+    .brand{
+      display:flex;align-items:center;gap:14px;min-width:0;
+    }
+    .brand-mark{
+      width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+      background:linear-gradient(180deg,#f6ead9,#ebd2af);color:var(--gold);font-family:"Great Vibes", cursive;font-size:28px;box-shadow: inset 0 0 0 1px #ead8c0;
+    }
+    .brand-copy{min-width:0}
+    .brand-copy strong{display:block;font-size:14px}
+    .brand-copy span{display:block;font-size:12px;color:var(--muted)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+    .toolbar button,.toolbar a{
+      border:none;border-radius:999px;padding:12px 16px;background:#fff;color:var(--text);cursor:pointer;font-size:13px;font-weight:600;box-shadow:0 8px 22px rgba(124,93,64,.11);border:1px solid #efdfcc;
+      transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .toolbar button:hover,.toolbar a:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(124,93,64,.15);background:#fffdfa}
+
+    .hero{
+      padding:22px 0 28px;
+    }
+    .hero-card{
+      position:relative;
+      display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;
+      background:linear-gradient(180deg, rgba(255,250,244,.9), rgba(255,248,239,.96));
+      border:1px solid #ead9c5;
+      border-radius:40px;
+      box-shadow:var(--shadow);
+      padding:28px;
+      overflow:hidden;
+    }
+    .hero-card::before{
+      content:"";position:absolute;inset:auto auto -120px -70px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle, rgba(231,203,163,.26), transparent 66%);
+    }
+    .hero-photo-wrap{position:relative;z-index:1}
+    .hero-photo{
+      aspect-ratio:4/5;border-radius:30px;overflow:hidden;box-shadow:0 28px 60px rgba(64,46,27,.18);position:relative;background:#f5e8d7;
+    }
+    .hero-photo img{width:100%;height:100%;object-fit:cover}
+    .floating-tag{
+      position:absolute;left:18px;bottom:18px;border-radius:20px;padding:12px 14px;background:rgba(255,250,244,.88);backdrop-filter: blur(8px);border:1px solid rgba(228,206,182,.85);box-shadow:0 14px 30px rgba(96,67,41,.12);
+      max-width:260px;
+    }
+    .floating-tag strong{display:block;font-size:14px;margin-bottom:4px}
+    .floating-tag span{display:block;font-size:12px;color:var(--muted);line-height:1.6}
+    .hero-copy{position:relative;z-index:1;padding:6px 8px 6px 0}
+    .eyebrow{letter-spacing:3px;text-transform:uppercase;font-size:12px;font-weight:700;color:var(--gold)}
+    .hero-copy h2{
+      font-family:"Cormorant Garamond", serif;font-size:clamp(34px, 5vw, 64px);line-height:1.02;margin:14px 0 14px;font-weight:600;
+    }
+    .hero-copy .script-name{
+      font-family:"Great Vibes", cursive;font-size:clamp(50px, 6vw, 82px);font-weight:400;color:#6d5a49;line-height:1;
+    }
+    .hero-copy .and{display:block;font-size:19px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin:8px 0}
+    .lead{font-size:15px;line-height:1.9;color:#6f635a;max-width:500px}
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+    .stat{
+      border-radius:22px;padding:16px;background:#fff;border:1px solid #efe2d2;box-shadow:0 10px 30px rgba(109,83,53,.07)
+    }
+    .stat small{display:block;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .stat strong{display:block;font-family:"Cormorant Garamond", serif;font-size:24px;font-weight:600}
+    .stat span{display:block;font-size:12px;color:var(--muted);margin-top:5px;line-height:1.6}
+
+    .section{padding:18px 0}
+    .section-head{text-align:center;margin:16px 0 26px}
+    .section-head .eyebrow{display:block;margin-bottom:10px}
+    .section-head h3{margin:0;font-family:"Cormorant Garamond", serif;font-size:42px;font-weight:600}
+    .section-head p{max-width:650px;margin:10px auto 0;line-height:1.8;color:var(--muted)}
+
+    .invite-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}
+    .card{
+      background:var(--paper);
+      border:1px solid #ead9c5;
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card.soft{background:linear-gradient(180deg, #fffaf4, #fff7ef)}
+    .card::after{
+      content:"";position:absolute;top:-70px;right:-80px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle, rgba(225,200,165,.18), transparent 68%);
+    }
+
+    .invitation-main .mini{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700}
+    .invitation-main h4{font-family:"Cormorant Garamond", serif;font-size:36px;margin:10px 0 10px;font-weight:600}
+    .quote{font-size:15px;line-height:1.9;color:#6e6259}
+    .date-ribbon{
+      display:flex;align-items:center;gap:16px;justify-content:center;margin:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;
+    }
+    .date-box{text-align:center}
+    .date-box strong{display:block;font-family:"Cormorant Garamond", serif;font-size:70px;line-height:.9;color:var(--gold)}
+    .date-box span{display:block;text-transform:uppercase;letter-spacing:2px;font-size:11px;color:var(--muted);margin-top:8px}
+    .date-side{min-width:140px;text-align:center;font-family:"Cormorant Garamond", serif;font-size:22px}
+    .date-side small{display:block;font-family:Inter,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+    .venue-box{
+      display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px
+    }
+    .venue-item{
+      border-radius:22px;padding:18px;background:#fff;border:1px solid #efdfcd;
+    }
+    .venue-item span{display:block;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+    .venue-item strong{display:block;font-size:16px;line-height:1.6}
+
+    .timeline{display:grid;gap:14px}
+    .timeline-item{
+      display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:flex-start;padding:16px;border-radius:22px;background:#fff;border:1px solid #efdfcd
+    }
+    .timeline-dot{width:48px;height:48px;border-radius:16px;background:linear-gradient(180deg,#f3e2ca,#ead0aa);display:grid;place-items:center;color:#7d6647;font-size:20px;box-shadow:inset 0 0 0 1px #e7d0b1}
+    .timeline-item strong{display:block;font-size:16px;margin-bottom:5px}
+    .timeline-item p{margin:0;color:var(--muted);line-height:1.7;font-size:13px}
+
+    .family-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .family-card{
+      padding:24px;border-radius:28px;background:linear-gradient(180deg,#fffaf4,#fff7ef);border:1px solid #ead9c5;box-shadow:var(--shadow)
+    }
+    .family-card .icon{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#f7e8d2,#edd5b0);display:grid;place-items:center;font-size:26px;color:#8a6d48;margin-bottom:16px}
+    .family-card small{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+    .family-card h4{font-family:"Cormorant Garamond", serif;font-size:30px;margin:0 0 12px;font-weight:600}
+    .family-card p{margin:7px 0;line-height:1.8;color:#6b5f56}
+
+    .gallery-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:18px}
+    .gallery-card{
+      border-radius:28px;overflow:hidden;position:relative;min-height:260px;border:1px solid #ead9c5;box-shadow:var(--shadow);background:#f1e6d7
+    }
+    .gallery-card.large{min-height:540px}
+    .gallery-card img{width:100%;height:100%;object-fit:cover}
+    .gallery-caption{
+      position:absolute;left:14px;right:14px;bottom:14px;padding:12px 14px;border-radius:18px;background:rgba(255,249,241,.88);backdrop-filter: blur(8px);border:1px solid rgba(233,216,197,.9)
+    }
+    .gallery-caption strong{display:block;font-size:15px;margin-bottom:4px}
+    .gallery-caption span{font-size:12px;color:var(--muted)}
+
+    .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+    .count-item{background:#fff;border:1px solid #efdfcd;border-radius:22px;padding:16px;text-align:center}
+    .count-item strong{display:block;font-family:"Cormorant Garamond", serif;font-size:34px;font-weight:600}
+    .count-item span{display:block;font-size:12px;color:var(--muted);margin-top:5px}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .cta-row a,.cta-row button{border:none;border-radius:999px;padding:13px 18px;background:linear-gradient(180deg,#6f5c49,#5d4a3a);color:#fff;font-weight:600;cursor:pointer;box-shadow:0 12px 30px rgba(77,59,43,.18)}
+    .cta-row .ghost{background:#fff;color:var(--text);border:1px solid #efdfcd;box-shadow:none}
+    .blessing{font-family:"Great Vibes", cursive;font-size:54px;line-height:1;color:var(--gold);margin-top:18px}
+
+    .footer-note{text-align:center;padding:28px 0 60px;color:var(--muted);font-size:12px;letter-spacing:1px}
+
+    .overlay{position:fixed;inset:0;background:rgba(37,26,18,.42);backdrop-filter:blur(3px);z-index:41;opacity:0;pointer-events:none;transition:opacity .35s ease}
+    .overlay.show{opacity:1;pointer-events:auto}
+    .drawer{
+      position:fixed;right:0;top:0;bottom:0;width:min(480px,100vw);background:#fffaf4;z-index:42;padding:24px 24px 34px;transform:translateX(104%);transition:transform .4s ease;overflow:auto;box-shadow:-20px 0 60px rgba(0,0,0,.15)
+    }
+    .drawer.show{transform:none}
+    .drawer h3{font-family:"Cormorant Garamond", serif;font-size:34px;margin:0 0 4px;font-weight:600}
+    .drawer p{font-size:13px;line-height:1.8;color:var(--muted)}
+    .drawer-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .close-btn{width:42px;height:42px;border-radius:50%;border:none;background:#f2e6d7;cursor:pointer;font-size:22px;color:#6f5c49}
+    .group-title{font-family:"Cormorant Garamond", serif;font-size:24px;font-weight:600;margin:18px 0 12px;padding-bottom:8px;border-bottom:1px solid #ead9c5}
+    .field{margin:12px 0}
+    .field label{display:block;margin-bottom:7px;font-size:12px;font-weight:700;color:#6f6258}
+    .field input,.field textarea{
+      width:100%;padding:12px 14px;border-radius:16px;border:1px solid #e8d7c4;background:#fff;color:var(--text);outline:none
+    }
+    .field textarea{resize:vertical;min-height:86px}
+    .field input:focus,.field textarea:focus{border-color:#c4a173;box-shadow:0 0 0 3px rgba(196,161,115,.08)}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .save-btn{width:100%;border:none;padding:14px 18px;border-radius:16px;background:linear-gradient(180deg,#6f5c49,#5d4a3a);color:#fff;font-weight:700;cursor:pointer;margin-top:12px}
+    .muted-btn{width:100%;margin-top:10px;border:none;padding:13px 18px;border-radius:16px;background:#f3e7d8;color:#6e5b49;font-weight:600;cursor:pointer}
+    .notice{min-height:20px;text-align:center;font-size:12px;color:#6e7d65;margin-top:10px}
+
+
+    /* Phong bì thủ công và thiệp gửi đích danh */
+    .opening{overflow-y:auto;padding:20px 0}
+    .opening-card{margin:auto}
+    .opening p{margin-bottom:14px}
+    .opening-date{margin-bottom:6px}
+    .envelope-stage{
+      position:relative;width:min(330px,78vw);height:205px;
+      margin:7px auto 2px;perspective:1200px;cursor:pointer;
+      -webkit-tap-highlight-color:transparent;outline-offset:8px;
+      transition:transform .35s ease;
+    }
+    .envelope-stage:hover{transform:translateY(-2px)}
+    .envelope-stage:focus-visible{outline:2px solid #fff5dd;border-radius:12px}
+    .envelope-shell{position:absolute;inset:27px 0 0;filter:drop-shadow(0 18px 18px rgba(14,10,8,.32))}
+    .envelope-back{position:absolute;inset:0;background:#bb9978;border-radius:5px}
+    .envelope-letter{
+      position:absolute;bottom:9px;left:10%;right:10%;height:90%;z-index:2;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:7px;padding:14px 10px;background:linear-gradient(160deg,#fffdf8,#f8efe4);
+      border:1px solid #e8d4b6;color:#806448;
+      box-shadow:0 3px 10px rgba(64,46,27,.1);
+      transition:transform 1.05s cubic-bezier(.25,.8,.22,1) .34s;
+    }
+    .envelope-letter::before{content:"";position:absolute;inset:7px;border:1px solid #e7d7c4;pointer-events:none}
+    .envelope-letter small{font-size:9px;letter-spacing:2.8px;color:#9a8065;font-weight:700}
+    .envelope-letter strong{font-family:"Cormorant Garamond",serif;font-size:clamp(21px,3.6vw,29px);font-weight:600;line-height:1.05;max-width:96%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .envelope-letter em{font-family:"Great Vibes",cursive;font-size:26px;font-style:normal;line-height:1.2}
+    .envelope-left{position:absolute;inset:0;z-index:3;background:#e6c49e;clip-path:polygon(0 0,53% 52%,0 100%)}
+    .envelope-right{position:absolute;inset:0;z-index:3;background:#e8caa9;clip-path:polygon(100% 0,47% 52%,100% 100%)}
+    .envelope-bottom{position:absolute;inset:0;z-index:4;background:linear-gradient(175deg,#eed7b6,#f5e2c5);clip-path:polygon(0 100%,50% 43%,100% 100%);border-radius:0 0 5px 5px}
+    .envelope-flap{
+      position:absolute;left:0;right:0;top:0;height:59%;z-index:5;
+      background:linear-gradient(180deg,#dfbd96,#eed3af);
+      clip-path:polygon(0 0,100% 0,50% 100%);
+      transform-origin:top;backface-visibility:hidden;
+      transition:transform .85s cubic-bezier(.2,.65,.17,1), z-index 0s .45s;
+    }
+    .envelope-seal{
+      position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);z-index:6;
+      width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+      background:#ac7658;color:#fff4e4;border:2px solid rgba(255,239,213,.8);
+      box-shadow:0 4px 10px rgba(88,49,34,.25),inset 0 0 0 3px rgba(255,231,196,.18);
+      font-family:"Great Vibes",cursive;font-size:28px;
+      transition:opacity .3s ease, transform .3s ease;
+    }
+    .envelope-stage.is-open .envelope-flap{transform:rotateX(180deg);z-index:1}
+    .envelope-stage.is-open .envelope-letter{transform:translateY(-81px)}
+    .envelope-stage.is-open .envelope-seal{opacity:0;transform:translate(-50%,-80%) scale(.7)}
+    .cover-recipient{margin:5px 0 7px;font-size:13px;color:rgba(255,255,255,.94)}
+    .cover-recipient b{color:#fff9ea;font-weight:700}
+    .open-trigger{margin-top:5px}
+    .recipient-ribbon{
+      display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;
+      padding:10px 14px;border:1px solid #e5cead;border-radius:99px;
+      background:#fff9ed;color:#7f6546;font-size:13px;margin-top:9px;
+    }
+    .recipient-ribbon strong{font-weight:700;color:#74523b}
+    .recipient-note{position:relative;text-align:center;border:1px solid #ead5ba;border-radius:22px;background:linear-gradient(160deg,#fff7e9,#fffdf7);padding:19px;margin-bottom:26px}
+    .recipient-note small{display:block;letter-spacing:2.5px;text-transform:uppercase;color:#987752;font-size:10px;font-weight:700}
+    .recipient-note strong{display:block;font-family:"Cormorant Garamond",serif;font-size:33px;color:#72553c;margin:7px 0;overflow-wrap:anywhere}
+    .recipient-note span{font-size:12px;line-height:1.8;color:#988574}
+    .guest-panel{background:#f7eee2;border:1px solid #ead8c1;border-radius:23px;padding:16px;margin:18px 0 24px}
+    .guest-panel .group-title{margin:0 0 10px}
+    .guest-panel p{margin:7px 0 12px}
+    .guest-copy{display:block;width:100%;border:0;border-radius:14px;background:#8c6a4d;color:#fff;padding:13px 16px;font-weight:700;cursor:pointer}
+    .guest-preview{font-size:12px;margin:10px 0;color:#78634e;line-height:1.6;overflow-wrap:anywhere}
+    .guest-hint{font-size:11px!important;margin:8px 0 0!important;line-height:1.6!important}
+    @media(max-width:720px){
+      .opening{padding:10px 0}
+      .opening-card{padding:22px 16px}
+      .opening h1{font-size:clamp(35px,9vw,48px)}
+      .opening .script{font-size:clamp(39px,10vw,57px);margin:5px 0 10px}
+      .opening p{font-size:12px;line-height:1.65}
+      .envelope-stage{width:min(310px,78vw);height:193px;margin-top:0}
+      .envelope-letter strong{font-size:22px}
+      .cover-recipient{font-size:12px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .envelope-stage,.envelope-letter,.envelope-flap,.envelope-seal{transition-duration:.01ms!important}
+    }
+
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .85s ease, transform .85s ease}
+    .reveal.show{opacity:1;transform:none}
+
+    @media (max-width: 980px){
+      .hero-card,.invite-layout,.bottom-grid{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:1fr 1fr}
+      .gallery-card.large{min-height:380px}
+    }
+    @media (max-width: 720px){
+      .container{width:min(100% - 16px, 1180px)}
+      .topbar{padding-top:14px}
+      .topbar-shell{border-radius:26px;padding:12px}
+      .toolbar{justify-content:flex-start}
+      .hero-card,.card,.family-card{padding:18px}
+      .hero-stats,.countdown,.family-grid,.venue-box,.gallery-grid{grid-template-columns:1fr}
+      .date-ribbon{gap:8px}
+      .date-side{min-width:98px;font-size:18px}
+      .date-box strong{font-size:54px}
+      .opening-card{padding:28px 18px}
+      .section-head h3{font-size:34px}
+      .gallery-card.large{min-height:320px}
+      .toolbar button,.toolbar a{width:100%;text-align:center}
+      .two-col{grid-template-columns:1fr}
+    }
+    @media print{
+      .opening,.topbar,.overlay,.drawer,.petals{display:none!important}
+      .page{opacity:1!important;transform:none!important}
+      .container{width:100%}
+      .hero,.section{padding:10px 0}
+      .card,.hero-card,.family-card,.gallery-card{box-shadow:none}
+      body{background:#fff}
+    }
+  </style>
+</head>
+<body>
+  <div class="petals" id="petals" aria-hidden="true"></div>
+
+  <section class="opening" id="opening" aria-label="Màn hình mở thiệp cưới">
+    <div class="opening-card">
+      <div class="opening-kicker">Wedding Invitation</div>
+      <h1>Trân trọng kính mời</h1>
+      <div class="script" id="openingNames">Minh &amp; An</div>
+      <div class="opening-date" id="openingDate">20.12.2026 · Hà Nội</div>
+      <p>
+        Chúng mình rất hạnh phúc khi sắp bước vào một chương mới của cuộc đời.
+        Sự hiện diện của bạn sẽ là món quà ý nghĩa nhất trong ngày đặc biệt ấy.
+      </p>
+      <div class="envelope-stage" id="envelopeStage" role="button" tabindex="0" aria-label="Chạm vào phong bì để mở thiệp cưới">
+        <div class="envelope-shell">
+          <div class="envelope-back"></div>
+          <div class="envelope-letter">
+            <small>TRÂN TRỌNG KÍNH MỜI</small>
+            <strong id="envelopeRecipient">Quý khách</strong>
+            <em id="envelopeNames">Minh &amp; An</em>
+          </div>
+          <div class="envelope-left"></div>
+          <div class="envelope-right"></div>
+          <div class="envelope-bottom"></div>
+          <div class="envelope-flap"></div>
+          <div class="envelope-seal">♡</div>
+        </div>
+      </div>
+      <div class="cover-recipient">Thư mời gửi đến <b id="coverRecipient">Quý khách</b></div>
+      <button class="open-trigger" id="openTrigger">✉ Mở phong thư mời</button>
+      <div class="opening-note">Chạm vào phong bì hoặc nút để mở thiệp</div>
+    </div>
+  </section>
+
+  <div class="page" id="page">
+    <div class="container">
+      <div class="topbar">
+        <div class="topbar-shell">
+          <div class="brand">
+            <div class="brand-mark" id="brandMark">M</div>
+            <div class="brand-copy">
+              <strong id="brandNames">Minh &amp; An</strong>
+              <span id="brandMeta">Wedding day · 20.12.2026</span>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button id="editButton">✎ Chỉnh sửa thông tin</button>
+            <button id="shareButton">↗ Sao chép liên kết</button>
+            <button id="printButton">⎙ In / Lưu PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="hero reveal">
+        <div class="hero-card">
+          <div class="hero-photo-wrap">
+            <div class="hero-photo">
+              <img src="assets/couple-main.png" alt="Ảnh cưới cô dâu chú rể" />
+            </div>
+            <div class="floating-tag">
+              <strong id="floatingLabel">A Beautiful Beginning</strong>
+              <span id="floatingMessage">Từ khoảnh khắc này, mọi điều tuyệt đẹp sẽ bắt đầu bằng hai tiếng “chúng mình”.</span>
+            </div>
+          </div>
+          <div class="hero-copy">
+            <div class="eyebrow">Save the Date</div>
+            <h2>Ngày hạnh phúc của</h2>
+            <div class="script-name" id="heroGroom">Minh</div>
+            <span class="and">and</span>
+            <div class="script-name" id="heroBride">An</div>
+            <div class="recipient-ribbon">💌 Trân trọng kính mời <strong id="heroRecipient">Quý khách</strong></div>
+            <p class="lead" id="welcomeText">
+              Trân trọng kính mời bạn và gia đình đến chung vui cùng chúng mình trong ngày lễ thành hôn.
+              Hạnh phúc sẽ trọn vẹn hơn khi có sự hiện diện thân thương của bạn.
+            </p>
+            <div class="hero-stats">
+              <div class="stat">
+                <small>Ngày cưới</small>
+                <strong id="statDate">20.12.2026</strong>
+                <span id="statWeekday">Chủ nhật</span>
+              </div>
+              <div class="stat">
+                <small>Thời gian</small>
+                <strong id="statTime">11:00</strong>
+                <span>Xin mời đến sớm để cùng chung vui</span>
+              </div>
+              <div class="stat">
+                <small>Địa điểm</small>
+                <strong id="statVenue">The Garden</strong>
+                <span id="statAddress">Hà Nội, Việt Nam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="section-head">
+          <span class="eyebrow">Invitation</span>
+          <h3>Thiệp mời lễ thành hôn</h3>
+          <p>
+            Tấm thiệp nhỏ này mang theo tất cả niềm vui, sự háo hức và lời mời chân thành nhất từ hai gia đình.
+          </p>
+        </div>
+        <div class="invite-layout">
+          <div class="card invitation-main soft">
+            <div class="recipient-note">
+              <small>Thư mời dành riêng cho</small>
+              <strong id="invitationRecipient">Quý khách</strong>
+              <span>Hai gia đình trân trọng kính mời đến chung vui trong ngày lễ thành hôn.</span>
+            </div>
+            <div class="mini">Together with our families</div>
+            <h4 id="mainNames">Minh &amp; An</h4>
+            <p class="quote" id="inviteMessage">
+              Trân trọng kính mời Quý khách đến tham dự buổi lễ thành hôn của chúng tôi,
+              để cùng chứng kiến khoảnh khắc thiêng liêng và chia sẻ niềm hạnh phúc trọn vẹn.
+            </p>
+            <div class="date-ribbon">
+              <div class="date-side" id="dateWeekday">Chủ nhật<small>Thứ</small></div>
+              <div class="date-box"><strong id="dateDay">20</strong><span id="dateMonth">Tháng 12</span></div>
+              <div class="date-side" id="dateYear">2026<small>Năm</small></div>
+            </div>
+            <div class="venue-box">
+              <div class="venue-item">
+                <span>Thời gian</span>
+                <strong id="timeText">11:00</strong>
+              </div>
+              <div class="venue-item">
+                <span>Địa điểm</span>
+                <strong id="venueText">Trung tâm Tiệc cưới The Garden</strong>
+              </div>
+              <div class="venue-item" style="grid-column:1/-1">
+                <span>Địa chỉ</span>
+                <strong id="addressText">Hà Nội, Việt Nam</strong>
+              </div>
+            </div>
+          </div>
+          <div class="card soft">
+            <div class="mini">Ngày cưới của chúng mình</div>
+            <h4>Lịch trình buổi lễ</h4>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot">💍</div>
+                <div>
+                  <strong>Lễ thành hôn</strong>
+                  <p id="timelineCeremony">Diễn ra vào lúc 11:00 tại Trung tâm Tiệc cưới The Garden.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">🥂</div>
+                <div>
+                  <strong>Đón khách &amp; chung vui</strong>
+                  <p>Rất mong bạn có mặt sớm để lưu lại những khoảnh khắc đẹp cùng cô dâu và chú rể.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot">📸</div>
+                <div>
+                  <strong>Góc lưu niệm</strong>
+                  <p>Hãy cùng chụp ảnh, gửi lời chúc và tạo nên thật nhiều kỷ niệm đáng nhớ trong ngày trọng đại.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="section-head">
+          <span class="eyebrow">Families</span>
+          <h3>Thông tin hai bên gia đình</h3>
+          <p>Sự yêu thương và chúc phúc từ gia đình chính là nền tảng đẹp nhất cho ngày hạnh phúc của chúng mình.</p>
+        </div>
+        <div class="family-grid">
+          <div class="family-card">
+            <div class="icon">🤵</div>
+            <small>Nhà trai</small>
+            <h4 id="groomFamilyTitle">Gia đình chú rể</h4>
+            <p>Ông: <strong id="groomFather">Nguyễn Văn Hùng</strong></p>
+            <p>Bà: <strong id="groomMother">Trần Thị Hoa</strong></p>
+            <p>Địa chỉ: <strong id="groomFamilyAddress">Hà Nội</strong></p>
+          </div>
+          <div class="family-card">
+            <div class="icon">👰</div>
+            <small>Nhà gái</small>
+            <h4 id="brideFamilyTitle">Gia đình cô dâu</h4>
+            <p>Ông: <strong id="brideFather">Lê Văn Bình</strong></p>
+            <p>Bà: <strong id="brideMother">Phạm Thị Mai</strong></p>
+            <p>Địa chỉ: <strong id="brideFamilyAddress">Hà Nội</strong></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="section-head">
+          <span class="eyebrow">Moments</span>
+          <h3>Khoảnh khắc của chúng mình</h3>
+          <p>Thiệp cưới không chỉ là lời mời, mà còn là nơi lưu giữ những hình ảnh đầu tiên cho hành trình yêu thương.</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-card large">
+            <img src="assets/couple-main.png" alt="Ảnh cưới chính" />
+            <div class="gallery-caption"><strong id="galleryMainTitle">Ảnh cưới của Minh &amp; An</strong><span id="galleryMainSub">Một khởi đầu dịu dàng, tinh khôi và đầy yêu thương.</span></div>
+          </div>
+          <div class="gallery-card">
+            <img src="assets/groom.jpg" alt="Ảnh chú rể" />
+            <div class="gallery-caption"><strong id="groomCaption">Chú rể</strong><span id="groomCaptionSub">Lịch lãm, điềm đạm và chân thành.</span></div>
+          </div>
+          <div class="gallery-card">
+            <img src="assets/bride.jpg" alt="Ảnh cô dâu" />
+            <div class="gallery-caption"><strong id="brideCaption">Cô dâu</strong><span id="brideCaptionSub">Dịu dàng, thanh lịch và thật rạng rỡ.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="bottom-grid">
+          <div class="card soft">
+            <div class="mini">Counting down</div>
+            <h4 style="font-family:'Cormorant Garamond',serif;font-size:34px;margin:8px 0 0;font-weight:600">Đếm ngược tới ngày cưới</h4>
+            <p class="quote">Từng ngày trôi qua đều đưa chúng mình đến gần hơn với khoảnh khắc hạnh phúc nhất.</p>
+            <div class="countdown" id="countdown">
+              <div class="count-item"><strong id="cdDays">0</strong><span>Ngày</span></div>
+              <div class="count-item"><strong id="cdHours">0</strong><span>Giờ</span></div>
+              <div class="count-item"><strong id="cdMinutes">0</strong><span>Phút</span></div>
+              <div class="count-item"><strong id="cdSeconds">0</strong><span>Giây</span></div>
+            </div>
+            <div class="blessing">See you at our wedding</div>
+          </div>
+          <div class="card soft">
+            <div class="mini">Directions & Sharing</div>
+            <h4 style="font-family:'Cormorant Garamond',serif;font-size:34px;margin:8px 0 0;font-weight:600">Thông tin tiện ích</h4>
+            <p class="quote">Bạn có thể nhanh chóng mở địa chỉ trên bản đồ, in thiệp hoặc chia sẻ thiệp cưới này cho người thân và bạn bè.</p>
+            <div class="cta-row">
+              <a id="mapLink" href="#" target="_blank" rel="noopener">📍 Xem địa chỉ</a>
+              <button class="ghost" id="copyButton">🔗 Sao chép link thiệp</button>
+              <button class="ghost" id="editBottomButton">✎ Chỉnh sửa nội dung</button>
+            </div>
+            <p class="quote" style="margin-top:18px" id="closingLine">
+              Chúng mình rất mong được đón tiếp bạn trong ngày đặc biệt này. Xin chân thành cảm ơn!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer-note">MADE WITH LOVE · WEDDING INVITATION</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <h3>Chỉnh sửa thiệp cưới</h3>
+        <p>Điền nội dung thật của bạn. Dữ liệu được lưu ngay trên trình duyệt và có thể chia sẻ bằng liên kết.</p>
+      </div>
+      <button class="close-btn" id="closeDrawer" aria-label="Đóng">×</button>
+    </div>
+
+    <form id="detailForm">
+      <div class="guest-panel">
+        <div class="group-title">💌 Khách mời nhận thiệp</div>
+        <p>Để trống sẽ hiển thị “Quý khách”. Điền riêng từng người để tạo liên kết có lời mời đích danh.</p>
+        <div class="field"><label for="recipientInput">Tên / cách xưng hô</label><input id="recipientInput" type="text" maxlength="100" autocomplete="off" placeholder="Ví dụ: Anh Hùng và gia đình"></div>
+        <div class="guest-preview" id="guestPreview" aria-live="polite">Thiệp hiển thị: Trân trọng kính mời Quý khách</div>
+        <button class="guest-copy" id="guestLinkButton" type="button">🔗 Lưu &amp; sao chép link riêng cho khách</button>
+        <p class="guest-hint">Lưu ý: cần đưa trang web lên hosting trước khi gửi link cho người khác. Tên khách được gắn vào đường link, không tự lấy từ máy của họ.</p>
+      </div>
+      <div class="group-title">Cô dâu &amp; chú rể</div>
+      <div class="two-col">
+        <div class="field"><label for="groom">Tên chú rể</label><input id="groom" name="groom" required></div>
+        <div class="field"><label for="bride">Tên cô dâu</label><input id="bride" name="bride" required></div>
+      </div>
+      <div class="field"><label for="welcomeTextInput">Lời chào / mô tả ngắn</label><textarea id="welcomeTextInput" name="welcomeText"></textarea></div>
+      <div class="field"><label for="inviteMessageInput">Lời mời bên trong thiệp</label><textarea id="inviteMessageInput" name="inviteMessage"></textarea><p class="guest-hint">Mẹo: dùng {khachMoi} trong lời mời để tự động thay bằng tên người nhận.</p></div>
+
+      <div class="group-title">Thời gian &amp; địa điểm</div>
+      <div class="two-col">
+        <div class="field"><label for="date">Ngày cưới</label><input id="date" name="date" type="date" required></div>
+        <div class="field"><label for="time">Giờ tổ chức</label><input id="time" name="time" type="time" required></div>
+      </div>
+      <div class="field"><label for="venue">Tên địa điểm</label><input id="venue" name="venue"></div>
+      <div class="field"><label for="address">Địa chỉ</label><textarea id="address" name="address"></textarea></div>
+
+      <div class="group-title">Gia đình nhà trai</div>
+      <div class="field"><label for="groomFatherInput">Họ tên bố chú rể</label><input id="groomFatherInput" name="groomFather"></div>
+      <div class="field"><label for="groomMotherInput">Họ tên mẹ chú rể</label><input id="groomMotherInput" name="groomMother"></div>
+      <div class="field"><label for="groomFamilyAddressInput">Địa chỉ nhà trai</label><input id="groomFamilyAddressInput" name="groomFamilyAddress"></div>
+
+      <div class="group-title">Gia đình nhà gái</div>
+      <div class="field"><label for="brideFatherInput">Họ tên bố cô dâu</label><input id="brideFatherInput" name="brideFather"></div>
+      <div class="field"><label for="brideMotherInput">Họ tên mẹ cô dâu</label><input id="brideMotherInput" name="brideMother"></div>
+      <div class="field"><label for="brideFamilyAddressInput">Địa chỉ nhà gái</label><input id="brideFamilyAddressInput" name="brideFamilyAddress"></div>
+
+      <button class="save-btn" type="submit">💍 Lưu thay đổi</button>
+      <button class="muted-btn" type="button" id="resetButton">Khôi phục nội dung mẫu</button>
+      <div class="notice" id="notice"></div>
+    </form>
+  </aside>
+
+  <script>
+    const defaults = {
+      groom: 'Minh',
+      bride: 'An',
+      date: '2026-12-20',
+      time: '11:00',
+      venue: 'Trung tâm Tiệc cưới The Garden',
+      address: 'Hà Nội, Việt Nam',
+      groomFather: 'Nguyễn Văn Hùng',
+      groomMother: 'Trần Thị Hoa',
+      groomFamilyAddress: 'Hà Nội',
+      brideFather: 'Lê Văn Bình',
+      brideMother: 'Phạm Thị Mai',
+      brideFamilyAddress: 'Hà Nội',
+      welcomeText: 'Trân trọng kính mời bạn và gia đình đến chung vui cùng chúng mình trong ngày lễ thành hôn. Hạnh phúc sẽ trọn vẹn hơn khi có sự hiện diện thân thương của bạn.',
+      inviteMessage: 'Trân trọng kính mời Quý khách đến tham dự buổi lễ thành hôn của chúng tôi, để cùng chứng kiến khoảnh khắc thiêng liêng và chia sẻ niềm hạnh phúc trọn vẹn.'
+    };
+
+    const $ = (id) => document.getElementById(id);
+    let state = { ...defaults };
+    let recipient = '';
+    const sanitizeRecipient = value => String(value || '').trim().slice(0,100);
+    const recipientLabel = () => recipient || 'Quý khách';
+
+    function loadRecipient(){
+      const params = new URLSearchParams(location.search);
+      recipient = sanitizeRecipient(params.get('to'));
+    }
+
+    function renderRecipient(){
+      const name = recipientLabel();
+      for(const id of ['envelopeRecipient','coverRecipient','heroRecipient','invitationRecipient']) setText(id,name);
+      setText('inviteMessage', (state.inviteMessage || defaults.inviteMessage).replaceAll('{khachMoi}', name).replaceAll('Quý khách', name));
+      $('recipientInput').value = recipient;
+      $('guestPreview').textContent = 'Thiệp hiển thị: Trân trọng kính mời ' + name;
+    }
+
+    function decodeInvite(encoded){
+      try{
+        const normalized = encoded.replace(/-/g,'+').replace(/_/g,'/');
+        const text = decodeURIComponent(escape(atob(normalized)));
+        return JSON.parse(text);
+      }catch(_){
+        return {};
+      }
+    }
+
+    function loadState(){
+      try{
+        const params = new URLSearchParams(location.search);
+        const invite = params.get('invite');
+        if(invite){
+          const fromQuery = decodeInvite(invite);
+          state = { ...defaults, ...Object.fromEntries(Object.entries(fromQuery).filter(([k,v]) => k in defaults && typeof v === 'string')) };
+          return;
+        }
+        const saved = localStorage.getItem('wedding-invite-pro-v2');
+        if(saved){
+          const parsed = JSON.parse(saved);
+          state = { ...defaults, ...Object.fromEntries(Object.entries(parsed).filter(([k,v]) => k in defaults && typeof v === 'string')) };
+        }
+      }catch(_){ state = { ...defaults }; }
+    }
+
+    function saveState(){
+      try{ localStorage.setItem('wedding-invite-pro-v2', JSON.stringify(state)); }
+      catch(_){ /* Vẫn cho phép tạo thiệp và chia sẻ link khi trình duyệt chặn lưu trữ. */ }
+    }
+
+    function setText(id, value){ const el = $(id); if(el) el.textContent = value || '—'; }
+
+    function formatDateParts(dateStr){
+      const d = new Date(dateStr + 'T12:00:00');
+      if(Number.isNaN(d.getTime())) return null;
+      const weekdayLong = new Intl.DateTimeFormat('vi-VN', { weekday: 'long' }).format(d);
+      return {
+        day: String(d.getDate()).padStart(2,'0'),
+        month: String(d.getMonth() + 1).padStart(2,'0'),
+        monthText: 'Tháng ' + String(d.getMonth() + 1),
+        year: String(d.getFullYear()),
+        weekday: weekdayLong.charAt(0).toUpperCase() + weekdayLong.slice(1),
+        shortDate: `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`
+      };
+    }
+
+    function render(){
+      const groom = state.groom.trim() || defaults.groom;
+      const bride = state.bride.trim() || defaults.bride;
+      const parts = formatDateParts(state.date) || formatDateParts(defaults.date);
+
+      setText('openingNames', `${groom} & ${bride}`);
+      setText('envelopeNames', `${groom} & ${bride}`);
+      setText('openingDate', `${parts.shortDate} · ${state.address || defaults.address}`);
+      renderRecipient();
+      setText('brandMark', (groom[0] || 'M').toUpperCase());
+      setText('brandNames', `${groom} & ${bride}`);
+      setText('brandMeta', `Wedding day · ${parts.shortDate}`);
+
+      setText('heroGroom', groom);
+      setText('heroBride', bride);
+      setText('mainNames', `${groom} & ${bride}`);
+      setText('floatingLabel', `${groom} ♡ ${bride}`);
+      setText('floatingMessage', 'Từ khoảnh khắc này, mọi điều tuyệt đẹp sẽ bắt đầu bằng hai tiếng “chúng mình”.');
+      setText('welcomeText', state.welcomeText || defaults.welcomeText);
+      setText('inviteMessage', (state.inviteMessage || defaults.inviteMessage).replaceAll('{khachMoi}', recipientLabel()).replaceAll('Quý khách', recipientLabel()));
+      setText('statDate', parts.shortDate);
+      setText('statWeekday', parts.weekday);
+      setText('statTime', state.time || defaults.time);
+      setText('statVenue', state.venue || defaults.venue);
+      setText('statAddress', state.address || defaults.address);
+      setText('dateWeekday', parts.weekday);
+      setText('dateDay', parts.day);
+      setText('dateMonth', parts.monthText);
+      setText('dateYear', parts.year);
+      setText('timeText', state.time || defaults.time);
+      setText('venueText', state.venue || defaults.venue);
+      setText('addressText', state.address || defaults.address);
+      setText('timelineCeremony', `Diễn ra vào lúc ${state.time || defaults.time} tại ${state.venue || defaults.venue}.`);
+      setText('groomFamilyTitle', `Gia đình chú rể ${groom}`);
+      setText('brideFamilyTitle', `Gia đình cô dâu ${bride}`);
+      setText('groomFather', state.groomFather || defaults.groomFather);
+      setText('groomMother', state.groomMother || defaults.groomMother);
+      setText('groomFamilyAddress', state.groomFamilyAddress || defaults.groomFamilyAddress);
+      setText('brideFather', state.brideFather || defaults.brideFather);
+      setText('brideMother', state.brideMother || defaults.brideMother);
+      setText('brideFamilyAddress', state.brideFamilyAddress || defaults.brideFamilyAddress);
+      setText('galleryMainTitle', `Ảnh cưới của ${groom} & ${bride}`);
+      setText('groomCaptionSub', `${groom} – lịch lãm, điềm đạm và chân thành.`);
+      setText('brideCaptionSub', `${bride} – dịu dàng, thanh lịch và thật rạng rỡ.`);
+      setText('closingLine', `Chúng mình rất mong được đón tiếp bạn trong ngày đặc biệt này. Xin chân thành cảm ơn!`);
+      document.title = `Thiệp cưới | ${groom} & ${bride}`;
+
+      const addressQuery = encodeURIComponent(state.address || defaults.address);
+      $('mapLink').href = `https://www.google.com/maps/search/?api=1&query=${addressQuery}`;
+
+      $('groom').value = state.groom;
+      $('bride').value = state.bride;
+      $('date').value = state.date;
+      $('time').value = state.time;
+      $('venue').value = state.venue;
+      $('address').value = state.address;
+      $('groomFatherInput').value = state.groomFather;
+      $('groomMotherInput').value = state.groomMother;
+      $('groomFamilyAddressInput').value = state.groomFamilyAddress;
+      $('brideFatherInput').value = state.brideFather;
+      $('brideMotherInput').value = state.brideMother;
+      $('brideFamilyAddressInput').value = state.brideFamilyAddress;
+      $('welcomeTextInput').value = state.welcomeText;
+      $('inviteMessageInput').value = state.inviteMessage;
+    }
+
+    function openDrawer(){ $('overlay').classList.add('show'); $('drawer').classList.add('show'); $('drawer').setAttribute('aria-hidden','false'); $('notice').textContent = ''; }
+    function closeDrawer(){ $('overlay').classList.remove('show'); $('drawer').classList.remove('show'); $('drawer').setAttribute('aria-hidden','true'); }
+
+    let opened = false;
+    function openInvitation(){
+      if(opened) return;
+      opened = true;
+      $('envelopeStage').classList.add('is-open');
+      $('openTrigger').disabled = true;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setTimeout(() => {
+        $('opening').classList.add('done');
+        $('page').classList.add('visible');
+        document.querySelectorAll('.reveal').forEach((el,i)=>setTimeout(()=>el.classList.add('show'), reduceMotion ? 0 : i*100));
+      }, reduceMotion ? 0 : 1480);
+    }
+
+    $('openTrigger').addEventListener('click', openInvitation);
+    $('envelopeStage').addEventListener('click', openInvitation);
+    $('envelopeStage').addEventListener('keydown', event => {
+      if(event.key === 'Enter' || event.key === ' '){event.preventDefault();openInvitation();}
+    });
+    $('editButton').addEventListener('click', openDrawer);
+    $('editBottomButton').addEventListener('click', openDrawer);
+    $('closeDrawer').addEventListener('click', closeDrawer);
+    $('overlay').addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeDrawer(); });
+
+    function saveFormChanges(){
+      const fd = new FormData($('detailForm'));
+      for(const key of Object.keys(defaults)) state[key] = String(fd.get(key) || '').trim().slice(0,500);
+      recipient = sanitizeRecipient($('recipientInput').value);
+      saveState();
+      render();
+    }
+
+    $('recipientInput').addEventListener('input', () => {
+      $('guestPreview').textContent = 'Thiệp hiển thị: Trân trọng kính mời ' + (sanitizeRecipient($('recipientInput').value) || 'Quý khách');
+    });
+
+    $('detailForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      saveFormChanges();
+      $('notice').textContent = '✓ Đã lưu thay đổi thành công';
+      setTimeout(closeDrawer, 700);
+    });
+
+    $('resetButton').addEventListener('click', ()=>{
+      state = { ...defaults };
+      try{ localStorage.removeItem('wedding-invite-pro-v2'); }catch(_){}
+      render();
+      $('notice').textContent = 'Đã khôi phục nội dung mẫu';
+    });
+
+    $('printButton').addEventListener('click', ()=>window.print());
+
+    function buildShareURL(){
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+      const url = new URL(location.href);
+      url.hash = '';
+      url.searchParams.set('invite', encoded);
+      if(recipient) url.searchParams.set('to', recipient);
+      else url.searchParams.delete('to');
+      return url.toString();
+    }
+
+    async function copyShareLink(btn){
+      const url = buildShareURL();
+      const old = btn.textContent;
+      try{
+        if(navigator.clipboard && window.isSecureContext){
+          await navigator.clipboard.writeText(url);
+        }else{
+          const field = document.createElement('textarea');
+          field.value = url;
+          field.style.position = 'fixed';field.style.left = '-9999px';
+          document.body.appendChild(field);field.select();
+          const ok = document.execCommand('copy');field.remove();
+          if(!ok) throw new Error('Clipboard không được hỗ trợ');
+        }
+        btn.textContent = '✓ Đã sao chép';
+        const label = location.protocol === 'file:'
+          ? 'Đã sao chép URL dùng trên máy này. Để gửi cho khách, hãy đăng website lên GitHub Pages hoặc Netlify rồi tạo link lại.'
+          : '✓ Đã tạo link dành cho ' + recipientLabel();
+        $('notice').textContent = label;
+        setTimeout(()=>btn.textContent = old, 2500);
+      }catch(_){
+        prompt('Hãy sao chép đường link này:', url);
+      }
+    }
+    $('guestLinkButton').addEventListener('click', () => {
+      if(!$('detailForm').reportValidity()) return;
+      saveFormChanges();
+      copyShareLink($('guestLinkButton'));
+    });
+    $('shareButton').addEventListener('click', ()=>copyShareLink($('shareButton')));
+    $('copyButton').addEventListener('click', ()=>copyShareLink($('copyButton')));
+
+    function runCountdown(){
+      const target = new Date((state.date || defaults.date) + 'T' + (state.time || defaults.time) + ':00');
+      const diff = target.getTime() - Date.now();
+      const total = Math.max(0, diff);
+      const days = Math.floor(total / (1000*60*60*24));
+      const hours = Math.floor((total / (1000*60*60)) % 24);
+      const minutes = Math.floor((total / (1000*60)) % 60);
+      const seconds = Math.floor((total / 1000) % 60);
+      setText('cdDays', days);
+      setText('cdHours', hours);
+      setText('cdMinutes', minutes);
+      setText('cdSeconds', seconds);
+    }
+
+    function initPetals(){
+      const wrap = $('petals');
+      const symbols = ['❀','✿','❋','❁'];
+      for(let i=0; i<18; i++){
+        const el = document.createElement('span');
+        el.className = 'petal';
+        el.textContent = symbols[i % symbols.length];
+        el.style.left = (i * 5.5 + (i % 3) * 9) + '%';
+        el.style.animationDuration = (14 + (i % 5) * 3) + 's';
+        el.style.animationDelay = (-i * 1.3) + 's';
+        el.style.fontSize = (16 + (i % 4) * 4) + 'px';
+        wrap.appendChild(el);
+      }
+    }
+
+    loadState();
+    loadRecipient();
+    render();
+    initPetals();
+    runCountdown();
+    setInterval(runCountdown, 1000);
+  </script>
+</body>
+</html>
