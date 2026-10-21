@@ -593,7 +593,7 @@
     <img class="pet-cat white" src="assets/cat-white.png" alt="">
     <img class="pet-cat gray" src="assets/cat-gray.png" alt="">
   </div>
-  <audio id="backgroundMusic" preload="auto">
+  <audio id="backgroundMusic" preload="auto" playsinline webkit-playsinline="true">
     <source src="assets/young-and-beautiful.mp3" type="audio/mpeg">
   </audio>
 
@@ -1208,16 +1208,20 @@
     async function startMusic(){
       const audio = $('backgroundMusic');
       audio.volume = 0.32;
-      if(audio.readyState < 1){
-        await new Promise(resolve => audio.addEventListener('loadedmetadata', resolve, { once:true }));
-      }
-      if(Number.isFinite(audio.duration) && audio.duration > musicClipStart && audio.currentTime < musicClipStart){
-        audio.currentTime = musicClipStart;
-      }
       try{
-        await audio.play();
+        const seekToClip = () => {
+          if(Number.isFinite(audio.duration) && audio.duration > musicClipStart && audio.currentTime < musicClipStart){
+            audio.currentTime = musicClipStart;
+          }
+        };
+        seekToClip();
+        if(audio.readyState < 1) audio.addEventListener('loadedmetadata', seekToClip, { once:true });
+        // iOS chỉ cho phép play() chạy ngay trong hành động chạm của người dùng.
+        // Không chờ metadata trước lệnh này, nếu không Safari/WebView sẽ chặn nhạc.
+        const playRequest = audio.play();
         musicPlaying = true;
         updateMusicButton();
+        await playRequest;
       }catch(_){
         musicPlaying = false;
         updateMusicButton();
