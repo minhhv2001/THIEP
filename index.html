@@ -1023,12 +1023,16 @@
         if(invite){
           const fromQuery = decodeInvite(invite);
           state = { ...defaults, ...Object.fromEntries(Object.entries(fromQuery).filter(([k,v]) => k in defaults && typeof v === 'string')) };
+          // Link khách mời cũ có thể đã được tạo lúc ô endpoint đang trống.
+          // Không để giá trị trống đó tắt tính năng lời chúc của toàn bộ thiệp.
+          if(!state.guestbookEndpoint.trim()) state.guestbookEndpoint = defaults.guestbookEndpoint;
           return;
         }
         const saved = localStorage.getItem('wedding-invite-pro-v3');
         if(saved){
           const parsed = JSON.parse(saved);
           state = { ...defaults, ...Object.fromEntries(Object.entries(parsed).filter(([k,v]) => k in defaults && typeof v === 'string')) };
+          if(!state.guestbookEndpoint.trim()) state.guestbookEndpoint = defaults.guestbookEndpoint;
         }
       }catch(_){ state = { ...defaults }; }
     }
@@ -1374,7 +1378,8 @@
     $('printButton').addEventListener('click', ()=>window.print());
 
     function buildShareURL(){
-      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+      const shareState = { ...state, guestbookEndpoint: state.guestbookEndpoint.trim() || defaults.guestbookEndpoint };
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(shareState)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
       const url = new URL(location.href);
       url.hash = '';
       url.searchParams.delete('admin');
