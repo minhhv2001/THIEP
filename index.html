@@ -1206,6 +1206,7 @@
       button.innerHTML = `<span class="music-wave" aria-hidden="true"><i></i><i></i><i></i></span><span class="music-note" aria-hidden="true">♪</span><span class="music-label">${musicPlaying ? 'Đang phát nhạc' : 'Bật nhạc nền'}</span>`;
     }
     async function startMusic(){
+      if(musicPlaying) return;
       const audio = $('backgroundMusic');
       audio.volume = 0.32;
       try{
@@ -1342,6 +1343,9 @@
       }, reduceMotion ? 0 : 3100);
     }
 
+    // Một số WebView iOS chỉ chấp nhận âm thanh ngay từ pointerdown, không phải click.
+    $('openTrigger').addEventListener('pointerdown', startMusic, { passive:true });
+    $('envelopeStage').addEventListener('pointerdown', startMusic, { passive:true });
     $('openTrigger').addEventListener('click', openInvitation);
     $('envelopeStage').addEventListener('click', openInvitation);
     $('envelopeStage').addEventListener('keydown', event => {
