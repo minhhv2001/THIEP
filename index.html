@@ -1146,10 +1146,15 @@
       document.title = `Thiệp cưới | ${groom} & ${bride}`;
 
       const addressQuery = encodeURIComponent(state.address || defaults.address);
-      const directionsUrl = state.mapUrl || `https://www.google.com/maps/search/?api=1&query=${addressQuery}`;
+      // Link rút gọn maps.app đôi lúc không mở được từ trang Netlify. Với link đó,
+      // dùng địa chỉ thật để tạo chỉ đường Google Maps ổn định trên mọi thiết bị.
+      const savedMapUrl = (state.mapUrl || '').trim();
+      const directionsUrl = savedMapUrl && !/maps\.app\.goo\.gl/i.test(savedMapUrl)
+        ? savedMapUrl
+        : `https://www.google.com/maps/dir/?api=1&destination=${addressQuery}`;
       $('mapLink').href = directionsUrl;
       $('mapDirections').href = directionsUrl;
-      $('mapFrame').src = `https://www.google.com/maps?q=${addressQuery}&z=16&output=embed`;
+      $('mapFrame').src = `https://maps.google.com/maps?output=embed&q=${addressQuery}&z=16`;
 
       $('groom').value = state.groom;
       $('bride').value = state.bride;
