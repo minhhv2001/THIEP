@@ -1285,7 +1285,13 @@
           document.documentElement.classList.remove('auto-scrolling');
           return;
         }
-        if(!document.hidden && !pageAutoScrollPointerActive && Date.now() >= pageAutoScrollPauseUntil && window.scrollY < maxScroll - 1){
+        const isPausedForReader = document.hidden || pageAutoScrollPointerActive || Date.now() < pageAutoScrollPauseUntil;
+        if(isPausedForReader){
+          // Chuột trên máy tính có thể tiếp tục cuộn sau sự kiện wheel,
+          // nên luôn lưu vị trí thật trong thời gian người xem đang tự cuộn.
+          pageAutoScrollPosition = window.scrollY;
+          pageAutoScrollLastPosition = window.scrollY;
+        }else if(window.scrollY < maxScroll - 1){
           const nextPosition = Math.min(maxScroll, pageAutoScrollPosition + elapsed * .042);
           pageAutoScrollPosition = nextPosition;
           pageAutoScrollLastPosition = nextPosition;
